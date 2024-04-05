@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "CodeLearningSpectaclesWPF": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "CLIENT_ID": "6ab621f34a0c32c827fe"
+      }
+    }
+  }
+}
