@@ -1,0 +1,35 @@
+﻿<Window x:Class="CodeLearningSpectaclesWPF.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:CodeLearningSpectaclesWPF"
+        mc:Ignorable="d"
+        Title="Code Learning Spectacles" Height="450" Width="800" WindowStartupLocation="CenterScreen" ResizeMode="CanMinimize">
+  <Grid>
+    <Grid.RowDefinitions>
+      <RowDefinition Height="2*"/>
+      <RowDefinition Height="*"/>
+      <RowDefinition Height="*"/>
+      <RowDefinition Height="*"/>
+      <RowDefinition Height="6*"/>
+    </Grid.RowDefinitions>
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="2*"/>
+      <ColumnDefinition Width="*"/>
+    </Grid.ColumnDefinitions>
+
+    <Button x:Name="btnTest" Content="Authenticate" Click="Button_Click" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="10" Grid.Row="0" Grid.Column="0"/>
+    <Label x:Name="lblMessageStart" Content="{Binding Path=MessageStart, Mode=OneWay}" HorizontalAlignment="Center" Grid.Row="1" Grid.Column="0"/>
+    <TextBlock x:Name="txbTest" TextWrapping="Wrap" HorizontalAlignment="Center" Grid.Row="2" Grid.Column="0">
+      <Hyperlink x:Name="hypVerification" NavigateUri="{Binding Path=UrlMessage, Mode=OneWay}" RequestNavigate="Hyperlink_RequestNavigate">
+        <TextBlock Text="{Binding Path=UrlMessage, Mode=OneWay}"/>
+      </Hyperlink>
+    </TextBlock>
+    <Label x:Name="lblMessageEnd" Content="{Binding Path=MessageEnd, Mode=OneWay}" HorizontalAlignment="Center" Grid.Row="3" Grid.Column="0"/>
+    <Button x:Name="btnCopyCode" Content="Copy Code"  Grid.Row="3" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="10" Click="CopyCode_Click"/>
+    <TextBlock x:Name="txbStatus" Text="" HorizontalAlignment="Center" TextAlignment="Center" Grid.Row="4" Grid.Column="0"/>
+    <Button x:Name="btnSendRequest" Content="Send Request"  Grid.Row="4" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="10" Click="SendRequest_Click"/>
+    
+  </Grid>
+</Window>
