@@ -64,6 +64,10 @@ jobs:
           name: nextTag
           path: ./nextTag.txt
 
+      - name: Read nextTag from file
+        id: read_next_tag
+        run: echo "::set-output name=nextTag::$(cat ./nextTag.txt)"
+
       # Setup .NET and build
       - name: Setup .NET
         uses: actions/setup-dotnet@v1
