@@ -41,8 +41,10 @@ jobs:
           tag: ${{ steps.semvers.outputs.v_patch }} # semvers outputs all next versions like major, minor and patch with optional v.
           commit_sha: ${{ github.sha }}
 
-      # Store nextTag output as artifact
       - name: Store nextTag as artifact
+        run: echo "${{ steps.semvers.outputs.v_patch }}" > nextTag.txt
+
+      - name: Upload nextTag.txt as an artifact
         uses: actions/upload-artifact@v2
         with:
           name: nextTag
