@@ -8,7 +8,7 @@ on:
 jobs:
   build:
     runs-on: windows-latest
-
+    
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
@@ -22,8 +22,13 @@ jobs:
       working-directory: "./CodeLearningSpectaclesWPF"
       run: dotnet build -c Release
 
-    - name: List Contents of Directory
-      run: ls -R CodeLearningSpectaclesWPF\CodeLearningSpectaclesWPF\bin\Release\net8.0-windows
+
+    - name: Get Release Information
+      id: get_latest_release
+      run: |
+        echo "::set-output name=upload_url::$(curl -sS -H 'Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}' \
+        -H 'Accept: application/vnd.github.v3+json' \
+        https://api.github.com/repos/${{ github.repository }}/releases/latest | jq -r '.upload_url')"
 
     - name: Upload Executable
       uses: actions/upload-artifact@v2
@@ -37,7 +42,7 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
       with:
-        upload_url: ${{ github.event.release.upload_url }}
+        upload_url: ${{ steps.get_latest_release.outputs.upload_url }}
         asset_path: CodeLearningSpectaclesWPF/CodeLearningSpectaclesWPF/bin/Release/net8.0-windows/CodeLearningSpectaclesWPF.exe
         asset_name: CodeLearningSpectaclesWPF.exe
         asset_content_type: application/octet-stream
