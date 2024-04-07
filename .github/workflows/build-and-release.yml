@@ -4,6 +4,8 @@ on:
   push:
     branches:
       - main
+    paths:
+      - 'CodeLearningSpectaclesWPF/**'
 
 jobs:
   tag_version:
@@ -16,7 +18,6 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-       # Create a new tag on main after merge
       - name: Get all tags
         id: get_tags
         run: git fetch --tags origin
@@ -26,7 +27,7 @@ jobs:
         uses: WyriHaximus/github-action-get-previous-tag@v1.3.0
         with:
           prefix: v
-          fallback: v0.0.0 # would be the first tag auto created if there are no previous tags
+          fallback: v0.0.0
 
       - name: Calculate next version
         id: semvers
@@ -38,7 +39,7 @@ jobs:
         id: create_tag
         uses: rickstaa/action-create-tag@v1.6.2
         with:
-          tag: ${{ steps.semvers.outputs.v_patch }} # semvers outputs all next versions like major, minor and patch with optional v.
+          tag: ${{ steps.semvers.outputs.v_patch }}
           commit_sha: ${{ github.sha }}
 
       - name: Store nextTag as artifact
@@ -75,7 +76,6 @@ jobs:
         run: |
           echo "NextTag: ${{ steps.read_next_tag.outputs.nextTag }}"
 
-      # Setup .NET and build
       - name: Setup .NET
         uses: actions/setup-dotnet@v1
         with:
@@ -85,7 +85,6 @@ jobs:
         working-directory: "./CodeLearningSpectaclesWPF"
         run: dotnet build -c Release
 
-      # Create a release
       - name: Create Release
         if: github.ref == 'refs/heads/main'
         id: create_release
@@ -98,7 +97,6 @@ jobs:
           draft: false
           prerelease: false
 
-      # Upload asset to the release
       - name: Upload Release Asset
         if: github.ref == 'refs/heads/main'
         id: upload-release-asset 
