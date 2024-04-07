@@ -40,9 +40,7 @@ jobs:
         run: mkdir release
 
       - name: Package artifacts
-        run: |
-          cd release
-          zip -r release.zip .
+        run: Compress-Archive -Path release -DestinationPath release.zip
 
       - name: Upload release
         uses: actions/upload-artifact@v2
