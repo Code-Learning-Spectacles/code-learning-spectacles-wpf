@@ -34,12 +34,10 @@ jobs:
           Code learning wpf release.
         draft: false
         prerelease: false
-        files: |
-          D:\a\code-learning-spectacles-wpf\code-learning-spectacles-wpf\CodeLearningSpectaclesWPF\CodeLearningSpectaclesWPF\bin\Release\net8.0-windows\CodeLearningSpectaclesWPF.dll
-
-    # - name: Upload Executable
-    #   uses: actions/upload-artifact@v2
-    #   with:
-    #     name: codelearningwpf
-    #     path: bin\Release\net8.0-windows\*.{exe,dll}
+        
+    - name: Upload Executable
+      uses: actions/upload-artifact@v2
+      with:
+        name: codelearningwpf
+        path: CodeLearningSpectaclesWPF\bin\Release\net8.0-windows\*.{exe,dll}
 
