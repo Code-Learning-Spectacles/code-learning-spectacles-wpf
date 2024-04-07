@@ -22,6 +22,12 @@ jobs:
         working-directory: "./CodeLearningSpectaclesWPF"
         run: dotnet build -c Release
 
+      - name: Create Release Directory
+        run: mkdir release
+
+      - name: Copy Artifacts
+        run: cp -r CodeLearningSpectaclesWPF/CodeLearningSpectaclesWPF/bin/Release/net8.0-windows/* release/
+
   release:
     name: Create Release
     runs-on: windows-latest
@@ -32,11 +38,8 @@ jobs:
 
       - name: Package artifacts
         run: |
-          mkdir release
-          cp -r wpf/CodeLearningSpectaclesWPF/CodeLearningSpectaclesWPF/bin/Release/net8.0-windows release/
           cd release
           zip -r release.zip .
-
 
       - name: Upload release
         uses: actions/upload-artifact@v2
