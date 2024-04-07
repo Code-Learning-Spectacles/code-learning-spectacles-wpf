@@ -9,7 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.NET.Sdk.WindowsDesktop" Version="5.0.0" />
+    <PackageReference Include="Microsoft.NET.Sdk.WindowsDesktop" Version="3.0.0" />
   </ItemGroup>
 
 </Project>
