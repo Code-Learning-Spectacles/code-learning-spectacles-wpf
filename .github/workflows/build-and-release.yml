@@ -19,7 +19,7 @@ jobs:
           dotnet-version: '3.1.x'
 
       - name: Build project
-        working-directory: '/CodeLearningSpectaclesWPF'
+        working-directory: "./CodeLearningSpectaclesWPF"
         run: dotnet build -c Release
 
   release:
