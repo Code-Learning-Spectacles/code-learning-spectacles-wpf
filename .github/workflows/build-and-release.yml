@@ -36,6 +36,9 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
 
+      - name: Create Release Directory
+        run: mkdir release
+
       - name: Package artifacts
         run: |
           cd release
