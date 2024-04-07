@@ -6,6 +6,47 @@ on:
       - main
 
 jobs:
+  tag-version:
+    name: Tag new version
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      id-token: write
+    steps:
+      - uses: actions/checkout@v3.5.3
+        id: checkout-code
+        name: Checkout code
+        with:
+          ref: ${{ github.sha }}
+
+      # Create a new tag on main after merge
+      - name: Get all tags
+        id: get_tags
+        run: git fetch --tags origin
+
+      - name: Find previous tag
+        id: previous_tag
+        uses: WyriHaximus/github-action-get-previous-tag@v1.3.0
+        with:
+          prefix: v
+          fallback: v0.0.0 # would be the first tag auto created if there are no previous tags
+
+      - name: Calculate next version
+        id: semvers
+        uses: WyriHaximus/github-action-next-semvers@v1.2.1
+        with:
+          version: ${{ steps.previous_tag.outputs.tag }}
+
+      - name: Create new patch
+        id: create_tag
+        uses: rickstaa/action-create-tag@v1.6.2
+        with:
+          tag: ${{ steps.semvers.outputs.v_patch }} # semvers outputs all next versions like major, minor and patch with optional v.
+          commit_sha: ${{ github.sha }}
+
+    outputs:
+      nextTag: ${{ steps.semvers.outputs.v_patch }}
+      
   build:
     runs-on: windows-latest
     
@@ -30,8 +71,8 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
       with:
-        tag_name: v1.0.13
-        release_name: Release v1.0.13
+        tag_name: ${{ needs.tag-version.outputs.nextTag }}
+        release_name: ${{ needs.tag-version.outputs.nextTag }}
         draft: false
         prerelease: false
 
