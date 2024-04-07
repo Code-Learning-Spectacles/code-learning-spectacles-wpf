@@ -7,43 +7,38 @@ on:
 
 jobs:
   build:
-    name: Build
     runs-on: windows-latest
+
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
+    - name: Checkout code
+      uses: actions/checkout@v2
 
-      - name: Setup .NET SDK
-        uses: actions/setup-dotnet@v1
-        with:
-          dotnet-version: '8.x'
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: '8.x'
 
-      - name: Build project
-        working-directory: "./CodeLearningSpectaclesWPF"
-        run: dotnet build -c Release
+    - name: Build
+      run: dotnet build -c Release
 
-      - name: Create Release Directory
-        run: mkdir release
+    - name: Publish
+      run: dotnet publish -c Release -o publish
 
-      - name: Copy Artifacts
-        run: cp -r CodeLearningSpectaclesWPF/CodeLearningSpectaclesWPF/bin/Release/net8.0-windows/* release/
+    - name: Create Release
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: v1.0.0
+        release_name: Release v1.0.0
+        body: |
+          Code learning wpf relrease.
+        draft: false
+        prerelease: false
 
-  release:
-    name: Create Release
-    runs-on: windows-latest
-    needs: build
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
-
-      - name: Create Release Directory
-        run: mkdir release
-
-      - name: Package artifacts
-        run: Compress-Archive -Path release -DestinationPath release.zip
-
-      - name: Upload release
-        uses: actions/upload-artifact@v2
-        with:
-          name: release
-          path: release/release.zip
+    - name: Upload Executable
+      uses: actions/upload-artifact@v2
+      with:
+        name: my-executable
+        path: publish/*.exe
