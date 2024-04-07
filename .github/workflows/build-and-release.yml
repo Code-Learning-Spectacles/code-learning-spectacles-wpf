@@ -6,85 +6,61 @@ on:
       - main
 
 jobs:
-  tag-version:
-    name: Tag new version
+  build_and_release:
     runs-on: ubuntu-latest
     permissions:
       contents: write
       id-token: write
+
     steps:
-      - uses: actions/checkout@v3.5.3
-        id: checkout-code
-        name: Checkout code
-        with:
-          ref: ${{ github.sha }}
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-      # Create a new tag on main after merge
-      - name: Get all tags
-        id: get_tags
-        run: git fetch --tags origin
-
-      - name: Find previous tag
-        id: previous_tag
-        uses: WyriHaximus/github-action-get-previous-tag@v1.3.0
-        with:
-          prefix: v
-          fallback: v0.0.0 # would be the first tag auto created if there are no previous tags
-
-      - name: Calculate next version
-        id: semvers
+      # Calculate the next version and create a tag
+      - name: Tag new version
+        id: tag_version
         uses: WyriHaximus/github-action-next-semvers@v1.2.1
         with:
-          version: ${{ steps.previous_tag.outputs.tag }}
-
-      - name: Create new patch
-        id: create_tag
-        uses: rickstaa/action-create-tag@v1.6.2
-        with:
-          tag: ${{ steps.semvers.outputs.v_patch }} # semvers outputs all next versions like major, minor and patch with optional v.
-          commit_sha: ${{ github.sha }}
-
-    outputs:
-      nextTag: ${{ steps.semvers.outputs.v_patch }}
+          version: ${{ github.ref }}
       
-  build:
-    runs-on: windows-latest
-    
-    steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
+      - name: Create a new patch
+        run: git tag ${{ steps.tag_version.outputs.v_patch }}
+      
+      - name: Push tag to GitHub
+        run: git push origin ${{ steps.tag_version.outputs.v_patch }}
+        
+      # Build the project
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: '8.x'
 
-    - name: Setup .NET
-      uses: actions/setup-dotnet@v1
-      with:
-        dotnet-version: '8.x'
+      - name: Build
+        working-directory: "./CodeLearningSpectaclesWPF"
+        run: dotnet build -c Release
 
-    - name: Build
-      working-directory: "./CodeLearningSpectaclesWPF"
-      run: dotnet build -c Release
+      # Create a release
+      - name: Create Release
+        if: github.ref == 'refs/heads/main'
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+        with:
+          tag_name: ${{ steps.tag_version.outputs.v_patch }}
+          release_name: ${{ steps.tag_version.outputs.v_patch }}
+          draft: false
+          prerelease: false
 
-    # Create a release
-    - name: Create Release
-      if: github.ref == 'refs/heads/main'
-      id: create_release
-      uses: actions/create-release@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
-      with:
-        tag_name: ${{ needs.tag-version.outputs.nextTag }}
-        release_name: ${{ needs.tag-version.outputs.nextTag }}
-        draft: false
-        prerelease: false
-
-    # Upload asset to the release
-    - name: Upload Release Asset
-      if: github.ref == 'refs/heads/main'
-      id: upload-release-asset 
-      uses: actions/upload-release-asset@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
-      with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: CodeLearningSpectaclesWPF/CodeLearningSpectaclesWPF/bin/Release/net8.0-windows/CodeLearningSpectaclesWPF.exe
-        asset_name: CodeLearningSpectaclesWPF.exe
-        asset_content_type: application/octet-stream
+      # Upload asset to the release
+      - name: Upload Release Asset
+        if: github.ref == 'refs/heads/main'
+        id: upload-release-asset 
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: CodeLearningSpectaclesWPF/CodeLearningSpectaclesWPF/bin/Release/net8.0-windows/CodeLearningSpectaclesWPF.exe
+          asset_name: CodeLearningSpectaclesWPF.exe
+          asset_content_type: application/octet-stream
