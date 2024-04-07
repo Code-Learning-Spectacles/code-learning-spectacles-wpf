@@ -64,12 +64,12 @@ jobs:
           name: nextTag
           path: ./nextTag.txt
 
-      - name: List files in directory
-        run: Get-ChildItem -Path .\ -File
-
       - name: Read nextTag from file
         id: read_next_tag
-        run: echo "::set-output name=nextTag::$(Get-ChildItem './nextTag.txt')"
+        run: |
+          $filePath = (Get-ChildItem -Path './nextTag.txt')
+          $content = Get-Content -Path $filePath -Raw
+          echo "::set-output name=nextTag::$content"
 
       - name: Print nextTag
         run: |
