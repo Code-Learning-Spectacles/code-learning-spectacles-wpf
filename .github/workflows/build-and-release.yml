@@ -71,6 +71,9 @@ jobs:
         id: read_next_tag
         run: echo "::set-output name=nextTag::$(Get-ChildItem './nextTag.txt')"
 
+      - name: Print nextTag
+        run: |
+          echo "NextTag: ${{ steps.read_next_tag.outputs.nextTag }}"
 
       # Setup .NET and build
       - name: Setup .NET
