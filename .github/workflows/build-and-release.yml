@@ -16,18 +16,30 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      # Calculate the next version and create a tag
+       # Create a new tag on main after merge
+      - name: Get all tags
+        id: get_tags
+        run: git fetch --tags origin
+
+      - name: Find previous tag
+        id: previous_tag
+        uses: WyriHaximus/github-action-get-previous-tag@v1.3.0
+        with:
+          prefix: v
+          fallback: v0.0.0 # would be the first tag auto created if there are no previous tags
+
       - name: Calculate next version
         id: semvers
         uses: WyriHaximus/github-action-next-semvers@v1.2.1
         with:
-          version: ${{ github.ref }}
+          version: ${{ steps.previous_tag.outputs.tag }}
 
       - name: Create new patch
-        run: git tag ${{ steps.semvers.outputs.v_patch }}
-
-      - name: Push tag to GitHub
-        run: git push origin ${{ steps.semvers.outputs.v_patch }}
+        id: create_tag
+        uses: rickstaa/action-create-tag@v1.6.2
+        with:
+          tag: ${{ steps.semvers.outputs.v_patch }} # semvers outputs all next versions like major, minor and patch with optional v.
+          commit_sha: ${{ github.sha }}
 
       # Store nextTag output as artifact
       - name: Store nextTag as artifact
@@ -37,24 +49,18 @@ jobs:
           path: nextTag.txt
 
   build_and_release:
+    name: Build and Release on Windows
     runs-on: windows-latest
     needs: tag_version
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      # Download nextTag.txt artifact
-      - name: Download nextTag.txt
+      - name: Download nextTag.txt artifact
         uses: actions/download-artifact@v2
         with:
           name: nextTag
           path: ./nextTag.txt
-
-      # Read nextTag from file
-      - name: Read nextTag from file
-        id: read_next_tag
-        run: echo "::set-output name=nextTag::$(cat nextTag.txt)"
 
       # Setup .NET and build
       - name: Setup .NET
