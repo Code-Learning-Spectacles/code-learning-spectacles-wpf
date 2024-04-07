@@ -35,7 +35,7 @@ jobs:
         tag_name: v1.0.0
         release_name: Release v1.0.0
         body: |
-          Code learning wpf relrease.
+          Code learning wpf release.
         draft: false
         prerelease: false
 
@@ -43,4 +43,5 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: my-executable
-        path: publish/*.exe
+        path: publish/*.{exe,dll}
+
