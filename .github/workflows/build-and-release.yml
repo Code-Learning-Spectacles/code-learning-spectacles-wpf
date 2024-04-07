@@ -69,7 +69,8 @@ jobs:
 
       - name: Read nextTag from file
         id: read_next_tag
-        run: echo "::set-output name=nextTag::$(Get-Content 'D:\a\code-learning-spectacles-wpf\code-learning-spectacles-wpf\nextTag.txt')"
+        run: echo "::set-output name=nextTag::$(Get-Content './nextTag.txt')"
+
 
       # Setup .NET and build
       - name: Setup .NET
