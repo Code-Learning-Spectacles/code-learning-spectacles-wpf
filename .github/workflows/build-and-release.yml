@@ -22,27 +22,25 @@ jobs:
       working-directory: "./CodeLearningSpectaclesWPF"
       run: dotnet build -c Release
 
-    - name: List Contents of Release Directory
+    - name: List Contents of Directory
       run: ls -R CodeLearningSpectaclesWPF\CodeLearningSpectaclesWPF\bin\Release\net8.0-windows
-      
-    - name: Upload Executables
+
+    - name: Upload Executable
       uses: actions/upload-artifact@v2
       with:
-        name: CodeLearningSpectacles
+        name: my-executable
         path: CodeLearningSpectaclesWPF/CodeLearningSpectaclesWPF/bin/Release/net8.0-windows/*
-        
+
     - name: Create Release
       id: create_release
       uses: actions/create-release@v1
       env:
         GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
       with:
-        tag_name: v1.0.10
-        release_name: Release v1.0.10
+        tag_name: v1.0.11
+        release_name: Release v1.0.11
         body: |
-          Code learning wpf release.
+          Code learning spectacles executables.
         draft: false
         prerelease: false
-        
-   
-
+        artifact: my-executable
