@@ -16,7 +16,7 @@ jobs:
       - name: Setup .NET Core SDK
         uses: actions/setup-dotnet@v1
         with:
-          dotnet-version: '3.1.x' # Change this to your desired .NET Core version
+          dotnet-version: '8.0.3'
 
       - name: Build project
         run: dotnet build -c Release
@@ -32,9 +32,10 @@ jobs:
       - name: Package artifacts
         run: |
           mkdir release
-          cp -r ./path/to/your/project/bin/Release/* release/
+          cp -r CodeLearningSpectaclesWPF/CodeLearningSpectaclesWPF/bin/Release/net8.0-windows/* release/
           cd release
           zip -r release.zip .
+
 
       - name: Upload release
         uses: actions/upload-artifact@v2
