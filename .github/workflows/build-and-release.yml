@@ -6,53 +6,66 @@ on:
       - main
 
 jobs:
-  tag-version:
+  tag_version:
     name: Tag new version
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
     permissions:
       contents: write
       id-token: write
     steps:
-      - uses: actions/checkout@v3.5.3
-        id: checkout-code
-        name: Checkout code
-        with:
-          ref: ${{ github.sha }}
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-      # Create a new tag on main after merge
-      - name: Get all tags
-        id: get_tags
-        run: git fetch --tags origin
-
-      - name: Find previous tag
-        id: previous_tag
-        uses: WyriHaximus/github-action-get-previous-tag@v1.3.0
-        with:
-          prefix: v
-          fallback: v0.0.0 # would be the first tag auto created if there are no previous tags
-
+      # Calculate the next version and create a tag
       - name: Calculate next version
         id: semvers
         uses: WyriHaximus/github-action-next-semvers@v1.2.1
         with:
-          version: ${{ steps.previous_tag.outputs.tag }}
+          version: ${{ github.ref }}
 
       - name: Create new patch
-        id: create_tag
-        uses: rickstaa/action-create-tag@v1.6.2
+        run: git tag ${{ steps.semvers.outputs.v_patch }}
+
+      - name: Push tag to GitHub
+        run: git push origin ${{ steps.semvers.outputs.v_patch }}
+
+      # Store nextTag output as artifact
+      - name: Store nextTag as artifact
+        uses: actions/upload-artifact@v2
         with:
-          tag: ${{ steps.semvers.outputs.v_patch }} # semvers outputs all next versions like major, minor and patch with optional v.
-          commit_sha: ${{ github.sha }}
-      
+          name: nextTag
+          path: nextTag.txt
+
+  build_and_release:
+    runs-on: windows-latest
+    needs: tag_version
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      # Download nextTag.txt artifact
+      - name: Download nextTag.txt
+        uses: actions/download-artifact@v2
+        with:
+          name: nextTag
+          path: ./nextTag.txt
+
+      # Read nextTag from file
+      - name: Read nextTag from file
+        id: read_next_tag
+        run: echo "::set-output name=nextTag::$(cat nextTag.txt)"
+
+      # Setup .NET and build
       - name: Setup .NET
         uses: actions/setup-dotnet@v1
         with:
           dotnet-version: '8.x'
-  
+
       - name: Build
         working-directory: "./CodeLearningSpectaclesWPF"
         run: dotnet build -c Release
-  
+
       # Create a release
       - name: Create Release
         if: github.ref == 'refs/heads/main'
@@ -61,11 +74,11 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
         with:
-          tag_name: ${{ steps.create_tag.outputs.v_patch  }}
-          release_name: ${{ steps.create_tag.outputs.v_patch }}
+          tag_name: ${{ steps.read_next_tag.outputs.nextTag }}
+          release_name: ${{ steps.read_next_tag.outputs.nextTag }}
           draft: false
           prerelease: false
-  
+
       # Upload asset to the release
       - name: Upload Release Asset
         if: github.ref == 'refs/heads/main'
