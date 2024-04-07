@@ -19,6 +19,7 @@ jobs:
         dotnet-version: '8.x'
 
     - name: Build
+      working-directory: "./CodeLearningSpectaclesWPF"
       run: dotnet build -c Release
 
     - name: Publish
