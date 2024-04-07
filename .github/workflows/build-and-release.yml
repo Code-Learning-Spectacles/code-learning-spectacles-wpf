@@ -33,7 +33,7 @@ jobs:
       - name: Package artifacts
         run: |
           mkdir release
-          cp -r CodeLearningSpectaclesWPF/CodeLearningSpectaclesWPF/bin/Release/net8.0-windows/* release/
+          cp -r wpf/CodeLearningSpectaclesWPF/CodeLearningSpectaclesWPF/bin/Release/net8.0-windows release/
           cd release
           zip -r release.zip .
 
