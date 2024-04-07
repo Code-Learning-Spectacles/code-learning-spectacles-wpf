@@ -22,12 +22,11 @@ jobs:
       working-directory: "./CodeLearningSpectaclesWPF"
       run: dotnet build -c Release
 
-    - name: Publish
-      working-directory: "./CodeLearningSpectaclesWPF"
-      run: dotnet publish -c Release -o publish
+    - name: Build
+      run: dotnet build -c Release
 
-    - name: List Contents of Publish Directory
-      run: ls -R publish
+    - name: List Contents of Release Directory
+      run: ls -R bin\Release\net8.0-windows
 
     - name: Create Release
       id: create_release
@@ -35,16 +34,18 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
       with:
-        tag_name: v1.0.2
-        release_name: Release v1.0.2
+        tag_name: v1.0.3
+        release_name: Release v1.0.3
         body: |
           Code learning wpf release.
         draft: false
         prerelease: false
+        files: |
+          bin/Release/net8.0-windows/**
 
     - name: Upload Executable
       uses: actions/upload-artifact@v2
       with:
-        name: my-executable
-        path: publish/*.{exe,dll}
+        name: codelearningwpf
+        path: bin\Release\net8.0-windows\*.{exe,dll}
 
