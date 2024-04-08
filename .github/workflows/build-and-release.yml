@@ -78,11 +78,17 @@ jobs:
         with:
           dotnet-version: "8.x"
 
-      - name: Publish Release
+      - name: Build DOTNET Release
         working-directory: "./CodeLearningSpectaclesWPF"
         run: |
           dotnet publish -r win-x64 -p:PublishSingleFile=true --self-contained true -c Release
           Compress-Archive -Path "CodeLearningSpectaclesWPF/bin/Release/net8.0-windows/win-x64/publish" -DestinationPath "wpf-windows-x64.zip"
+
+      - name: List files in root directory
+        run: ls -l
+
+      - name: List files in CodeLearningSpectaclesWPF directory
+        run: ls -l CodeLearningSpectaclesWPF
 
       - name: Create Release
         if: github.ref == 'refs/heads/main'
@@ -104,6 +110,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: wpf-windows-x64.zip
+          asset_path: .CodeLearningSpectaclesWPF/wpf-windows-x64.zip
           asset_name: CodeLearningSpectaclesWPF.zip
           asset_content_type: application/zip
