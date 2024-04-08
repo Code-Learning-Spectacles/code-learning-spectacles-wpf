@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace CodeLearningSpectaclesWPF.ViewModels
 {
-  internal class MainViewModel : INotifyPropertyChanged
+  internal class LoginViewModel : INotifyPropertyChanged
   {
 
     public event PropertyChangedEventHandler? PropertyChanged;
@@ -55,7 +55,7 @@ namespace CodeLearningSpectaclesWPF.ViewModels
       }
     }
 
-    public MainViewModel()
+    public LoginViewModel()
     {
       UrlMessage = "";
       MessageStart = "";
