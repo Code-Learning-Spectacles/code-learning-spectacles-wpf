@@ -63,15 +63,16 @@ jobs:
       - name: Download nextTag.txt artifact
         uses: actions/download-artifact@v2
         with:
-          name: nextTag
-          path: ./nextTag.txt
+            name: nextTag
+            path: ./nextTag.txt
 
       - name: Read nextTag from file
         id: read_next_tag
         run: |
-          $filePath = (Get-ChildItem -Path './nextTag.txt')
-          $content = Get-Content -Path $filePath -Raw
-          echo "::set-output name=nextTag::$content"
+            filePath="./nextTag.txt"
+            content=$(cat $filePath)
+            echo "::set-output name=nextTag::$content"
+
 
       - name: Setup .NET
         uses: actions/setup-dotnet@v1
