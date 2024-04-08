@@ -6,7 +6,7 @@ on:
     branches:
       - main
     paths:
-      - 'CodeLearningSpectaclesWPF/**'
+      - "CodeLearningSpectaclesWPF/**"
 
 jobs:
   tag_version:
@@ -54,7 +54,7 @@ jobs:
 
   build_and_release:
     name: Build and Release
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
     needs: tag_version
     steps:
       - name: Checkout code
@@ -63,27 +63,26 @@ jobs:
       - name: Download nextTag.txt artifact
         uses: actions/download-artifact@v2
         with:
-            name: nextTag
-            path: ./nextTag.txt
+          name: nextTag
+          path: ./nextTag.txt
 
       - name: Read nextTag from file
         id: read_next_tag
         run: |
-            filePath="./nextTag.txt"
-            content=$(cat $filePath)
-            echo "::set-output name=nextTag::$content"
-
+          $filePath = (Get-ChildItem -Path './nextTag.txt')
+          $content = Get-Content -Path $filePath -Raw
+          echo "::set-output name=nextTag::$content"
 
       - name: Setup .NET
         uses: actions/setup-dotnet@v1
         with:
-          dotnet-version: '8.x'
+          dotnet-version: "8.x"
 
       - name: Publish Release
         working-directory: "./CodeLearningSpectaclesWPF"
-        run: | 
+        run: |
           dotnet publish -r win-x64 -p:PublishSingleFile=true --self-contained true -c Release
-          zip -r -j wpf-windows-x64.zip CodeLearningSpectaclesWPF/CodeLearningSpectaclesWPF/bin/Release/net8.0-windows/win-x64/publish/*
+          Compress-Archive -Path "CodeLearningSpectaclesWPF/CodeLearningSpectaclesWPF/bin/Release/net8.0-windows/win-x64/publish" -DestinationPath "wpf-windows-x64.zip"
 
       - name: Create Release
         if: github.ref == 'refs/heads/main'
@@ -99,13 +98,12 @@ jobs:
 
       - name: Upload Release Asset
         if: github.ref == 'refs/heads/main'
-        id: upload-release-asset 
+        id: upload-release-asset
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: CodeLearningSpectaclesWPF/CodeLearningSpectaclesWPF/wpf-windows-x64.zip
+          asset_path: wpf-windows-x64.zip
           asset_name: CodeLearningSpectaclesWPF.zip
           asset_content_type: application/zip
-
