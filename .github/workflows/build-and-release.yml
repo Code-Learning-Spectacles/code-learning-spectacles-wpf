@@ -85,10 +85,10 @@ jobs:
           Compress-Archive -Path "CodeLearningSpectaclesWPF/bin/Release/net8.0-windows/win-x64/publish" -DestinationPath "wpf-windows-x64.zip"
 
       - name: List files in root directory
-        run: ls -l
+        run: dir
 
       - name: List files in CodeLearningSpectaclesWPF directory
-        run: ls -l CodeLearningSpectaclesWPF
+        run: dir CodeLearningSpectaclesWPF
 
       - name: Create Release
         if: github.ref == 'refs/heads/main'
