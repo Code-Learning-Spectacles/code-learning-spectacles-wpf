@@ -84,13 +84,7 @@ jobs:
           dotnet publish -r win-x64 -p:PublishSingleFile=true --self-contained true -c Release
           Compress-Archive -Path "CodeLearningSpectaclesWPF/bin/Release/net8.0-windows/win-x64/publish" -DestinationPath "wpf-windows-x64.zip"
 
-      - name: List files in root directory
-        run: dir
-
-      - name: List files in CodeLearningSpectaclesWPF directory
-        run: dir CodeLearningSpectaclesWPF
-
-      - name: Create Release
+      - name: Create Github Release
         if: github.ref == 'refs/heads/main'
         id: create_release
         uses: actions/create-release@v1
