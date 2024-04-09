@@ -86,10 +86,10 @@ namespace CodeLearningSpectaclesWPF
     {
       try
       {
-        Client.DefaultRequestHeaders.Add("Authorization", "Bearer " + Environment.GetEnvironmentVariable("ACCESS_TOKEN"));
-        Client.DefaultRequestHeaders.Accept.Clear();
+        Client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Environment.GetEnvironmentVariable("ACCESS_TOKEN"));
         Client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
         var profiles = await Client.GetFromJsonAsync<List<Profile>>("Profiles");
+                Console.WriteLine(profiles);
         if (profiles != null && profiles.Count > 0)
         {
           var profile = profiles.Find(x => x.Name.Equals(name));
@@ -155,8 +155,8 @@ namespace CodeLearningSpectaclesWPF
       HttpRequestMessage msg = new HttpRequestMessage(HttpMethod.Post, url);
       msg.Headers.Add("Accept", "application/json");
       HttpResponseMessage response = await Client.SendAsync(msg);
-
-      return await response.Content.ReadAsStringAsync();
+            
+            return await response.Content.ReadAsStringAsync();
     }
 
     private void CopyCode_Click(object sender, RoutedEventArgs e)

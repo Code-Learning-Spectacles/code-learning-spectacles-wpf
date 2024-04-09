@@ -20,18 +20,20 @@
       <ColumnDefinition Width="*"/>
     </Grid.ColumnDefinitions>
 
-    <Label x:Name="lblTitle" Content="Welcome to Code Learning Spectacles!" Grid.Column="0" Grid.Row="0" Foreground="#FF84A8FF" FontSize="16" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
-    <Label x:Name="lblLoggedIn" Content="Checking login..." Grid.Column="1" Grid.Row="0" Foreground="#FF84A8FF" FontSize="16" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
-    <Button x:Name="btnLogin" Content="Login with Github" Click="Login_Click" HorizontalAlignment="Center" VerticalAlignment="Center" Background="White" Visibility="Hidden" Padding="10" Grid.Row="1" Grid.Column="0"/>
-    <Button x:Name="btnLogout" Content="Logout"  Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="10" Background="White" Visibility="Hidden" Click="Logout_Click"/>
-    <Label x:Name="lblMessageStart" Content="{Binding Path=MessageStart, Mode=OneWay}" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="2" Grid.Column="0"/>
-    <TextBlock x:Name="txbTest" TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="3" Grid.Column="0">
+    <Label x:Name="lblTitle" Content="Welcome to Code Learning Spectacles!" Grid.Column="0" Grid.Row="0" Foreground="Black" FontSize="24" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontWeight="Bold"/>
+    <!--  load in image -->
+    <Image Source="resources/glasses.png"></Image>
+    <Label x:Name="lblLoggedIn" Content="Checking login..." Grid.Column="1" Grid.Row="0" Foreground="Black" FontSize="18" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontWeight="Bold"/>
+    <Button x:Name="btnLogin" Content="Login with Github" Click="Login_Click" HorizontalAlignment="Center" VerticalAlignment="Center" Background="White" FontWeight="Bold" Visibility="Hidden" Padding="10" Grid.Row="1" Grid.Column="0"/>
+    <Button x:Name="btnLogout" Content="Logout"  Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="10" Background="White" FontWeight="Bold" Visibility="Hidden" Click="Logout_Click"/>
+    <Label x:Name="lblMessageStart" Content="{Binding Path=MessageStart, Mode=OneWay}" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="2" FontWeight="Bold" Grid.Column="0" FontSize="18"/>
+    <TextBlock x:Name="txbTest" TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="3" FontWeight="Bold" Grid.Column="0" FontSize="18">
       <Hyperlink x:Name="hypVerification" NavigateUri="{Binding Path=UrlMessage, Mode=OneWay}" RequestNavigate="Hyperlink_RequestNavigate">
-        <TextBlock Text="{Binding Path=UrlMessage, Mode=OneWay}"/>
+        <TextBlock Text="{Binding Path=UrlMessage, Mode=OneWay}" FontWeight="Bold"/>
       </Hyperlink>
     </TextBlock>
-    <Label x:Name="lblMessageEnd" Content="{Binding Path=MessageEnd, Mode=OneWay}" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="4" Grid.Column="0"/>
-    <Button x:Name="btnCopyCode" Content="Copy Code"  Grid.Row="4" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Background="White" Visibility="Hidden" Padding="10" Click="CopyCode_Click"/>
+        <Label x:Name="lblMessageEnd" Content="{Binding Path=MessageEnd, Mode=OneWay}" HorizontalAlignment="Center" FontWeight="Bold"  VerticalAlignment="Center" Grid.Row="4" FontSize="18" Grid.Column="0"/>
+        <Button x:Name="btnCopyCode" Content="Copy Code"  Grid.Row="4" Grid.Column="1" HorizontalAlignment="Center" FontWeight="Bold" VerticalAlignment="Center" Background="White" Visibility="Hidden" Padding="10" Click="CopyCode_Click"/>
 
   </Grid>
 </Window>

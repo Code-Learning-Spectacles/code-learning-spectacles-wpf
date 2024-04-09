@@ -22,11 +22,9 @@
         </Label>
         <Button x:Name="btnPython" Padding="10" Content="Python" Background="White" Click="btnPython_Click" Margin="0,0,0,20"/>
 
-        <Button x:Name="btnTemp1" Padding="10" Content="Temp1" Background="White" Click="btnTemp_Click" Margin="0,0,0,20"/>
+        <Button x:Name="btnJavascript" Padding="10" Content="Javascript" Background="White" Click="btnJavascript_Click" Margin="0,0,0,20"/>
 
-        <Button x:Name="btnTemp2" Padding="10" Content="Temp2" Background="White" Click="btnTemp_Click" Margin="0,0,0,20"/>
-
-        <Button x:Name="btnTemp3" Padding="10" Content="Temp3" Background="White" Click="btnTemp_Click"/>
+        <Button x:Name="btnCsharp" Padding="10" Content="C#" Background="White" Click="btnCsharp_Click" Margin="0,0,0,20"/>
       </StackPanel>
     </ScrollViewer>
     <!-- Second Column (Data input, display) -->
