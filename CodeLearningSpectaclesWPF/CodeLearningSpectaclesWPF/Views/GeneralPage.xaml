@@ -6,9 +6,15 @@
       xmlns:local="clr-namespace:CodeLearningSpectaclesWPF.Views"
       mc:Ignorable="d" 
       d:DesignHeight="434.04" d:DesignWidth="533.333333333333"
-      Title="General Page">
+      Title="General Page"
+       Background="White">
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <StackPanel>
+            
+            <Label x:Name="Heading" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="24" FontWeight="Bold" Foreground="Black" HorizontalContentAlignment="Center" Grid.ColumnSpan="2" Margin="209,0,0,0"/>
 
-  <Grid>
-    <Label Content="TODO General Page" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-  </Grid>
+            <WrapPanel x:Name="MainWrapPanel" Orientation="Horizontal"/>
+            
+        </StackPanel>
+    </ScrollViewer>
 </Page>

@@ -1,6 +1,9 @@
-﻿using CodeLearningSpectaclesWPF.Views;
+﻿using CodeLearningSpectaclesWPF.Models;
+using CodeLearningSpectaclesWPF.Models.DTO;
+using CodeLearningSpectaclesWPF.Views;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Net.Http.Json;
 using System.Windows;
 using System.Windows.Media;
 
@@ -14,8 +17,9 @@ namespace CodeLearningSpectaclesWPF
 
     private static HttpClient Client = new HttpClient()
     {
-      BaseAddress = new Uri("https://localhost:7107/api/v1")
+        BaseAddress = new Uri("https://localhost:7107/api/v1/")
     };
+
 
     public static BrushConverter bc = new();
 
@@ -36,17 +40,13 @@ namespace CodeLearningSpectaclesWPF
       btnPython.Background = (Brush)bc.ConvertFrom("#FFF");
       btnPython.BorderThickness = new Thickness(1);
 
-      btnTemp1.BorderBrush = (Brush)bc.ConvertFrom("#FF707070");
-      btnTemp1.Background = (Brush)bc.ConvertFrom("#FFF");
-      btnTemp1.BorderThickness = new Thickness(1);
+      btnCsharp.BorderBrush = (Brush)bc.ConvertFrom("#FF707070");
+      btnCsharp.Background = (Brush)bc.ConvertFrom("#FFF");
+      btnCsharp.BorderThickness = new Thickness(1);
 
-      btnTemp2.BorderBrush = (Brush)bc.ConvertFrom("#FF707070");
-      btnTemp2.Background = (Brush)bc.ConvertFrom("#FFF");
-      btnTemp2.BorderThickness = new Thickness(1);
-
-      btnTemp3.BorderBrush = (Brush)bc.ConvertFrom("#FF707070");
-      btnTemp3.Background = (Brush)bc.ConvertFrom("#FFF");
-      btnTemp3.BorderThickness = new Thickness(1);
+      btnJavascript.BorderBrush = (Brush)bc.ConvertFrom("#FF707070");
+      btnJavascript.Background = (Brush)bc.ConvertFrom("#FFF");
+      btnJavascript.BorderThickness = new Thickness(1);
     }
 
     private void btnFavourites_Click(object sender, RoutedEventArgs e)
@@ -58,37 +58,82 @@ namespace CodeLearningSpectaclesWPF
       DataFrame.Content = new FavouritesPage();
     }
 
-    private void btnPython_Click(object sender, RoutedEventArgs e)
+    private async void btnPython_Click(object sender, RoutedEventArgs e)
     {
-      ResetSelections();
-      btnPython.BorderBrush = (Brush)bc.ConvertFrom("#FF84A8FF");
-      btnPython.Background = (Brush)bc.ConvertFrom("#FF84A8FF");
-      btnPython.BorderThickness = new Thickness(2);
-      DataFrame.Content = new GeneralPage();
+        Client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Environment.GetEnvironmentVariable("ACCESS_TOKEN"));
+        var languageId = (int)CodingLanguagesEnum.Python;
+        var languageconstructs = await Client.GetFromJsonAsync<List<Languageconstruct>> ("Languageconstructs/getByLanguage/" + languageId.ToString());
+
+        var languageConstructDTOs = new List<LanguageConstructDTO>();
+
+        foreach (var languageConstruct in languageconstructs)
+        {
+            var dto = new LanguageConstructDTO
+            {
+                Languageconstructid = languageConstruct.Languageconstructid,
+                Codinglanguage = Enum.GetName(typeof(CodingLanguagesEnum), languageConstruct.Codinglanguageid),
+                Codeconstruct = Enum.GetName(typeof(ConstructEnum), languageConstruct.Codeconstructid),
+                Construct = languageConstruct.Construct
+            };
+
+            languageConstructDTOs.Add(dto);
+        }
+
+        
+          DataFrame.Content = new GeneralPage(languageConstructDTOs);
     }
 
-    private async void btnTemp_Click(object sender, RoutedEventArgs e)
+    private async void btnCsharp_Click(object sender, RoutedEventArgs e)
     {
-      ResetSelections();
-      btnTemp1.BorderBrush = (Brush)bc.ConvertFrom("#FF84A8FF");
-      btnTemp1.Background = (Brush)bc.ConvertFrom("#FF84A8FF");
-      btnTemp1.BorderThickness = new Thickness(2);
-      DataFrame.Content = new GeneralPage();
-      try
-      {
-        Client.DefaultRequestHeaders.Add("Authorization", "Bearer " + Environment.GetEnvironmentVariable("ACCESS_TOKEN"));
-        using HttpResponseMessage response = await Client.GetAsync("Codeconstructs");
+        Client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Environment.GetEnvironmentVariable("ACCESS_TOKEN"));
+        var languageId = (int)CodingLanguagesEnum.CSharp;
+        var languageconstructs = await Client.GetFromJsonAsync<List<Languageconstruct>> ("Languageconstructs/getByLanguage/" + languageId.ToString());
 
-        string content = await response.Content.ReadAsStringAsync();
-        MessageBox.Show(content);
-      }
-      catch (HttpRequestException ex)
-      {
-        MessageBox.Show(ex.Message, "Error getting data", MessageBoxButton.OK, MessageBoxImage.Error);
-      }
+        var languageConstructDTOs = new List<LanguageConstructDTO>();
+
+        foreach (var languageConstruct in languageconstructs)
+        {
+            var dto = new LanguageConstructDTO
+            {
+                Languageconstructid = languageConstruct.Languageconstructid,
+                Codinglanguage = Enum.GetName(typeof(CodingLanguagesEnum), languageConstruct.Codinglanguageid),
+                Codeconstruct = Enum.GetName(typeof(ConstructEnum), languageConstruct.Codeconstructid),
+                Construct = languageConstruct.Construct
+            };
+
+            languageConstructDTOs.Add(dto);
+        }
+
+      
+        DataFrame.Content = new GeneralPage(languageConstructDTOs);
     }
 
-    private void btnExit_Click(object sender, RoutedEventArgs e)
+    private async void btnJavascript_Click(object sender, RoutedEventArgs e)
+    {
+        Client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Environment.GetEnvironmentVariable("ACCESS_TOKEN"));
+        var languageId = (int)CodingLanguagesEnum.JavaScript;
+        var languageconstructs = await Client.GetFromJsonAsync<List<Languageconstruct>>("Languageconstructs/getByLanguage/" + languageId.ToString());
+
+        var languageConstructDTOs = new List<LanguageConstructDTO>();
+
+        foreach (var languageConstruct in languageconstructs)
+        {
+            var dto = new LanguageConstructDTO
+            {
+                Languageconstructid = languageConstruct.Languageconstructid,
+                Codinglanguage = Enum.GetName(typeof(CodingLanguagesEnum), languageConstruct.Codinglanguageid),
+                Codeconstruct = Enum.GetName(typeof(ConstructEnum), languageConstruct.Codeconstructid),
+                Construct = languageConstruct.Construct
+            };
+
+            languageConstructDTOs.Add(dto);
+        }
+
+       
+        DataFrame.Content = new GeneralPage(languageConstructDTOs);
+    }
+
+        private void btnExit_Click(object sender, RoutedEventArgs e)
     {
       ResetSelections();
       DataFrame.Content = null;
