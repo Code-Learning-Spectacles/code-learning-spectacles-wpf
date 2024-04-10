@@ -52,10 +52,6 @@ namespace CodeLearningSpectaclesWPF
         private async void btnFavourites_Click(object sender, RoutedEventArgs e)
         {
             ResetSelections();
-            btnFavourites.BorderBrush = (Brush)bc.ConvertFrom("#FF84A8FF");
-            btnFavourites.Background = (Brush)bc.ConvertFrom("#FF84A8FF");
-            btnFavourites.BorderThickness = new Thickness(2);
-
             Client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Environment.GetEnvironmentVariable("ACCESS_TOKEN"));
             var languageconstructs = await Client.GetFromJsonAsync<List<Languageconstruct>>("Languageconstructs");
             var profileLanguageconstructs = await Client.GetFromJsonAsync<List<Profilelanguageconstruct>>("Profilelanguageconstructs/getByProfile/" + Helpers.ProfileID);
@@ -79,6 +75,8 @@ namespace CodeLearningSpectaclesWPF
         Client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Environment.GetEnvironmentVariable("ACCESS_TOKEN"));
         var languageId = (int)CodingLanguagesEnum.Python;
         var languageconstructs = await Client.GetFromJsonAsync<List<Languageconstruct>> ("Languageconstructs/getByLanguage/" + languageId.ToString());
+        var profileLanguageconstructs = await Client.GetFromJsonAsync<List<Profilelanguageconstruct>>("Profilelanguageconstructs/getByProfile/" + Helpers.ProfileID);
+
 
         var languageConstructDTOs = new List<LanguageConstructDTO>();
 
@@ -96,7 +94,7 @@ namespace CodeLearningSpectaclesWPF
         }
 
         
-          DataFrame.Content = new GeneralPage(languageConstructDTOs);
+          DataFrame.Content = new GeneralPage(languageConstructDTOs, profileLanguageconstructs);
     }
 
     private async void btnCsharp_Click(object sender, RoutedEventArgs e)
@@ -104,6 +102,7 @@ namespace CodeLearningSpectaclesWPF
         Client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Environment.GetEnvironmentVariable("ACCESS_TOKEN"));
         var languageId = (int)CodingLanguagesEnum.CSharp;
         var languageconstructs = await Client.GetFromJsonAsync<List<Languageconstruct>> ("Languageconstructs/getByLanguage/" + languageId.ToString());
+        var profileLanguageconstructs = await Client.GetFromJsonAsync<List<Profilelanguageconstruct>>("Profilelanguageconstructs/getByProfile/" + Helpers.ProfileID);
 
         var languageConstructDTOs = new List<LanguageConstructDTO>();
 
@@ -121,7 +120,7 @@ namespace CodeLearningSpectaclesWPF
         }
 
       
-        DataFrame.Content = new GeneralPage(languageConstructDTOs);
+        DataFrame.Content = new GeneralPage(languageConstructDTOs, profileLanguageconstructs);
     }
 
     private async void btnJavascript_Click(object sender, RoutedEventArgs e)
@@ -129,6 +128,8 @@ namespace CodeLearningSpectaclesWPF
         Client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Environment.GetEnvironmentVariable("ACCESS_TOKEN"));
         var languageId = (int)CodingLanguagesEnum.JavaScript;
         var languageconstructs = await Client.GetFromJsonAsync<List<Languageconstruct>>("Languageconstructs/getByLanguage/" + languageId.ToString());
+        var profileLanguageconstructs = await Client.GetFromJsonAsync<List<Profilelanguageconstruct>>("Profilelanguageconstructs/getByProfile/" + Helpers.ProfileID);
+
 
         var languageConstructDTOs = new List<LanguageConstructDTO>();
 
@@ -146,7 +147,7 @@ namespace CodeLearningSpectaclesWPF
         }
 
        
-        DataFrame.Content = new GeneralPage(languageConstructDTOs);
+        DataFrame.Content = new GeneralPage(languageConstructDTOs, profileLanguageconstructs);
     }
 
         private void btnExit_Click(object sender, RoutedEventArgs e)

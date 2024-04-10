@@ -5,35 +5,39 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CodeLearningSpectaclesWPF"
         mc:Ignorable="d"
-        Title="Code Learning Spectacles" Height="450" Width="800" WindowStartupLocation="CenterScreen" ResizeMode="CanMinimize" Loaded="Window_Loaded">
-  <Grid>
-    <Grid.RowDefinitions>
-      <RowDefinition Height="3*"/>
-      <RowDefinition Height="2*"/>
-      <RowDefinition Height="2*"/>
-      <RowDefinition Height="2*"/>
-      <RowDefinition Height="2*"/>
-      <RowDefinition Height="2*"/>
-    </Grid.RowDefinitions>
-    <Grid.ColumnDefinitions>
-      <ColumnDefinition Width="2*"/>
-      <ColumnDefinition Width="*"/>
-    </Grid.ColumnDefinitions>
+        Background="#8697ad"
+        Title="Code Learning Spectacles" Height="350" Width="500" WindowStartupLocation="CenterScreen" ResizeMode="CanMinimize" Loaded="Window_Loaded">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="3*"/>
+            <RowDefinition Height="2*"/>
+            <RowDefinition Height="2*"/>
+            <RowDefinition Height="2*"/>
+            <RowDefinition Height="2*"/>
+            <RowDefinition Height="2*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
 
-    <Label x:Name="lblTitle" Content="Welcome to Code Learning Spectacles!" Grid.Column="0" Grid.Row="0" Foreground="Black" FontSize="24" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontWeight="Bold"/>
-    <!--  load in image -->
-    <Image Source="resources/glasses.png"></Image>
-    <Label x:Name="lblLoggedIn" Content="Checking login..." Grid.Column="1" Grid.Row="0" Foreground="Black" FontSize="18" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontWeight="Bold"/>
-    <Button x:Name="btnLogin" Content="Login with Github" Click="Login_Click" HorizontalAlignment="Center" VerticalAlignment="Center" Background="White" FontWeight="Bold" Visibility="Hidden" Padding="10" Grid.Row="1" Grid.Column="0"/>
-    <Button x:Name="btnLogout" Content="Logout"  Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="10" Background="White" FontWeight="Bold" Visibility="Hidden" Click="Logout_Click"/>
-    <Label x:Name="lblMessageStart" Content="{Binding Path=MessageStart, Mode=OneWay}" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="2" FontWeight="Bold" Grid.Column="0" FontSize="18"/>
-    <TextBlock x:Name="txbTest" TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="3" FontWeight="Bold" Grid.Column="0" FontSize="18">
-      <Hyperlink x:Name="hypVerification" NavigateUri="{Binding Path=UrlMessage, Mode=OneWay}" RequestNavigate="Hyperlink_RequestNavigate">
-        <TextBlock Text="{Binding Path=UrlMessage, Mode=OneWay}" FontWeight="Bold"/>
+        <Label x:Name="lblTitle1" Content="Welcome to:" Grid.Column="0" Grid.Row="0" Foreground="Black" FontSize="28" VerticalContentAlignment="Center" FontWeight="Bold" Grid.ColumnSpan="2" Margin="10,-10,10,10"/>
+        <Label x:Name="lblTitle2" Content="Code Learning Spectacles!" Grid.Column="0" Grid.Row="0" Foreground="Black" FontSize="28" VerticalContentAlignment="Center" FontWeight="Bold" Grid.ColumnSpan="2" Margin="11,19,12,17" Grid.RowSpan="2"/>
+        <Label x:Name="lblSlogan" Content="See Code Clearly!" Grid.Column="0" Foreground="Black" FontSize="22" VerticalContentAlignment="Center" FontWeight="Bold" Margin="13,65,43,42" Grid.RowSpan="3"/>
+        <Path Stroke="#474c54" Fill="#FFF1F1F1" StrokeThickness="2" Data="M 20,0 L 40,20 L 20,40 L 0,20 Z" Grid.Column="1" Margin="93,10,-260,42" Grid.RowSpan="2"/>
+        <Path Stroke="#474c54" Fill="#FFF1F1F1" StrokeThickness="2" Data="M 20,0 L 40,20 L 20,40 L 0,20 Z" Grid.Column="1" Margin="93,21,-260,5" Grid.RowSpan="2" Grid.Row="1"/>
+        <Path Stroke="#474c54" Fill="#FFF1F1F1" StrokeThickness="2" Data="M 20,0 L 40,20 L 20,40 L 0,20 Z" Grid.Column="1" Margin="93,52,-260,0" Grid.RowSpan="2"/>
+        <Label x:Name="lblLoggedIn" Content="Checking login..." Grid.Row="4" Foreground="Black" FontSize="18" VerticalContentAlignment="Center" FontWeight="Bold" Margin="13,39,50,-12" Grid.RowSpan="2"/>
+        <Button x:Name="btnLogin" Content="Login with Github" Click="Login_Click" HorizontalAlignment="Left" VerticalAlignment="Top" Background="White" FontWeight="Bold" Visibility="Hidden" Padding="10" Height="53" Width="180" Margin="15,7,0,0" Grid.RowSpan="2" Grid.Row="4"/>
+        <Button x:Name="btnLogout" Content="Logout"  Grid.Row="5" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Top" Padding="10" Background="White" FontWeight="Bold" Visibility="Hidden" Click="Logout_Click" Width="81" Margin="0,4,0,0"/>
+        <Label x:Name="lblMessageStart" Content="{Binding Path=MessageStart, Mode=OneWay}" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Row="1" FontWeight="Bold" FontSize="18" Width="500" Grid.ColumnSpan="2" Margin="10,43,0,0" Grid.RowSpan="2"/>
+        <TextBlock Margin="17,35,150,44" Grid.RowSpan="3" Grid.Row="2" Grid.ColumnSpan="2" FontSize="18">
+            <Hyperlink x:Name="hypVerification" NavigateUri="{Binding Path=UrlMessage, Mode=OneWay}" RequestNavigate="Hyperlink_RequestNavigate">
+        <TextBlock Text="{Binding Path=UrlMessage, Mode=OneWay}" FontWeight="Bold" Width="380"/>
       </Hyperlink>
     </TextBlock>
-        <Label x:Name="lblMessageEnd" Content="{Binding Path=MessageEnd, Mode=OneWay}" HorizontalAlignment="Center" FontWeight="Bold"  VerticalAlignment="Center" Grid.Row="4" FontSize="18" Grid.Column="0"/>
-        <Button x:Name="btnCopyCode" Content="Copy Code"  Grid.Row="4" Grid.Column="1" HorizontalAlignment="Center" FontWeight="Bold" VerticalAlignment="Center" Background="White" Visibility="Hidden" Padding="10" Click="CopyCode_Click"/>
+        <Label x:Name="lblMessageEnd" Content="{Binding Path=MessageEnd, Mode=OneWay}" HorizontalAlignment="Left" FontWeight="Bold"  VerticalAlignment="Top" FontSize="18" Margin="13,19,0,0" Grid.ColumnSpan="2" Grid.Row="3" Grid.RowSpan="2"/>
+        <Button x:Name="btnCopyCode" FontSize="12" Content="Copy Code"  Grid.Row="3" HorizontalAlignment="Left" FontWeight="Bold" VerticalAlignment="Top" Visibility="Hidden" Padding="10" Click="CopyCode_Click" Margin="293,22,0,0" Grid.RowSpan="2" Grid.ColumnSpan="2" Background="White" Width="84" Height="40" RenderTransformOrigin="0.509,0.432"/>
 
-  </Grid>
+    </Grid>
 </Window>

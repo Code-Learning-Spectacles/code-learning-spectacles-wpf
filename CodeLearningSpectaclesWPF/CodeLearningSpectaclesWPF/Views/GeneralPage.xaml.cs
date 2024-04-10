@@ -25,17 +25,23 @@ namespace CodeLearningSpectaclesWPF.Views
     public partial class GeneralPage : Page
     {
         private List<LanguageConstructDTO> languageConstructDTOs;
-        
+        private List<Profilelanguageconstruct> profileLanguageconstructs;
+
+
 
         private static HttpClient Client = new HttpClient()
         {
             BaseAddress = new Uri("https://localhost:7107/api/v1/")
         };
 
-        public GeneralPage(List<LanguageConstructDTO> languageconstructDTOs)
+        public GeneralPage(List<LanguageConstructDTO> languageconstructDTOs, List<Profilelanguageconstruct> profileLanguageconstructs)
         {
             this.languageConstructDTOs = languageconstructDTOs;
+            this.profileLanguageconstructs = profileLanguageconstructs;
             InitializeComponent();
+
+
+
 
             foreach (var dto in languageConstructDTOs)
             {
@@ -62,6 +68,7 @@ namespace CodeLearningSpectaclesWPF.Views
 
                 TextBox inputTextBox = new TextBox();
                 inputTextBox.Margin = new Thickness(5);
+                inputTextBox.IsEnabled = !profileLanguageconstructs.Any(plc => plc.Languageconstructid == dto.Languageconstructid);
 
                 Button copyButton = new Button();
                 copyButton.Content = "Copy Code";
@@ -74,8 +81,9 @@ namespace CodeLearningSpectaclesWPF.Views
                 };
 
                 Button favouriteButton = new Button();
-                favouriteButton.Content = "Add to Favourites";
+                favouriteButton.Content = !profileLanguageconstructs.Any(plc => plc.Languageconstructid == dto.Languageconstructid) ? "Add to Favourites" : "Saved";
                 favouriteButton.Margin = new Thickness(5);
+                favouriteButton.IsEnabled= !profileLanguageconstructs.Any(plc => plc.Languageconstructid == dto.Languageconstructid);
                 favouriteButton.Background = Brushes.White;
                 favouriteButton.Click += async (sender, e) =>
                 {
@@ -128,7 +136,7 @@ namespace CodeLearningSpectaclesWPF.Views
                 border.Padding = new Thickness(5);
                 border.Child = stackPanel;
 
-                Heading.Content = dto.Codinglanguage;
+                Heading.Content = dto.Codinglanguage == "CSharp" ? "C#" : dto.Codinglanguage;
                 MainWrapPanel.Children.Add(border);
 
               
