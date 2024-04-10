@@ -151,7 +151,7 @@ namespace CodeLearningSpectaclesWPF
 
     static async Task<string> AuthenticateAsync()
     {
-      string url = "https://github.com/login/device/code?client_id=" + Environment.GetEnvironmentVariable("CLIENT_ID") + "&scope=read:user";
+      string url = "https://github.com/login/device/code?client_id=" + Helpers.CLIENT_ID + "&scope=read:user";
       HttpRequestMessage msg = new HttpRequestMessage(HttpMethod.Post, url);
       msg.Headers.Add("Accept", "application/json");
       HttpResponseMessage response = await Client.SendAsync(msg);
