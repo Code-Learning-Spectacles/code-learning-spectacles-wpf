@@ -155,7 +155,6 @@ namespace CodeLearningSpectaclesWPF
             HttpRequestMessage msg = new HttpRequestMessage(HttpMethod.Post, url);
             msg.Headers.Add("Accept", "application/json");
             HttpResponseMessage response = await Client.SendAsync(msg);
-
             return await response.Content.ReadAsStringAsync();
         }
 
