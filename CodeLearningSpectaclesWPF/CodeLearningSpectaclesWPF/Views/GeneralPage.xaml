@@ -7,7 +7,7 @@
       mc:Ignorable="d" 
       d:DesignHeight="434.04" d:DesignWidth="533.333333333333"
       Title="General Page"
-       Background="White">
+       Background="#FFEEEEEE">
     <ScrollViewer VerticalScrollBarVisibility="Auto">
         <StackPanel>
             
