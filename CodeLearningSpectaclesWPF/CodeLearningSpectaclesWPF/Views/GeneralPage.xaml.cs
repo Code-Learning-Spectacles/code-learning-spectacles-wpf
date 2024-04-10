@@ -19,7 +19,7 @@ namespace CodeLearningSpectaclesWPF.Views
 {
     public partial class GeneralPage : Page
     {
-        public List<LanguageConstructDTO> languageConstructDTOs;
+        private List<LanguageConstructDTO> languageConstructDTOs;
         public GeneralPage(List<LanguageConstructDTO> languageconstructDTOs)
         {
             this.languageConstructDTOs = languageconstructDTOs;

@@ -28,6 +28,6 @@
       </StackPanel>
     </ScrollViewer>
     <!-- Second Column (Data input, display) -->
-    <Frame x:Name="DataFrame" Grid.Column="1" Background="LightGray" NavigationUIVisibility="Hidden"></Frame>
+    <Frame x:Name="DataFrame" Grid.Column="1" Background="#FFEEEEEE" NavigationUIVisibility="Hidden"></Frame>
   </Grid>
 </Window>
