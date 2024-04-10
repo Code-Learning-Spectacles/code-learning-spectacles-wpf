@@ -9,54 +9,70 @@ using System.Windows.Media;
 
 namespace CodeLearningSpectaclesWPF
 {
-  /// <summary>
-  /// Interaction logic for MainWindow.xaml
-  /// </summary>
-  public partial class MainWindow : Window
-  {
-
-    private static HttpClient Client = new HttpClient()
+    /// <summary>
+    /// Interaction logic for MainWindow.xaml
+    /// </summary>
+    public partial class MainWindow : Window
     {
-        BaseAddress = new Uri("https://localhost:7107/api/v1/")
-    };
+
+        private static HttpClient Client = new HttpClient()
+        {
+            BaseAddress = new Uri("https://localhost:7107/api/v1/")
+        };
 
 
-    public static BrushConverter bc = new();
+        public static BrushConverter bc = new();
 
-    public MainWindow()
-    {
-      InitializeComponent();
-      lblWelcome.Text = "Hi " + Helpers.Profile.login;
-    }
+        public MainWindow()
+        {
+            InitializeComponent();
+            lblWelcome.Text = "Hi " + Helpers.Profile.login;
+        }
 
-    public void ResetSelections()
-    {
-      //Ensure only the selected page is highlighted when switching to a new page
-      btnFavourites.BorderBrush = (Brush)bc.ConvertFrom("#FF707070");
-      btnFavourites.Background = (Brush)bc.ConvertFrom("#FFF");
-      btnFavourites.BorderThickness = new Thickness(1);
+        public void ResetSelections()
+        {
+            //Ensure only the selected page is highlighted when switching to a new page
+            btnFavourites.BorderBrush = (Brush)bc.ConvertFrom("#FF707070");
+            btnFavourites.Background = (Brush)bc.ConvertFrom("#FFF");
+            btnFavourites.BorderThickness = new Thickness(1);
 
-      btnPython.BorderBrush = (Brush)bc.ConvertFrom("#FF707070");
-      btnPython.Background = (Brush)bc.ConvertFrom("#FFF");
-      btnPython.BorderThickness = new Thickness(1);
+            btnPython.BorderBrush = (Brush)bc.ConvertFrom("#FF707070");
+            btnPython.Background = (Brush)bc.ConvertFrom("#FFF");
+            btnPython.BorderThickness = new Thickness(1);
 
-      btnCsharp.BorderBrush = (Brush)bc.ConvertFrom("#FF707070");
-      btnCsharp.Background = (Brush)bc.ConvertFrom("#FFF");
-      btnCsharp.BorderThickness = new Thickness(1);
+            btnCsharp.BorderBrush = (Brush)bc.ConvertFrom("#FF707070");
+            btnCsharp.Background = (Brush)bc.ConvertFrom("#FFF");
+            btnCsharp.BorderThickness = new Thickness(1);
 
-      btnJavascript.BorderBrush = (Brush)bc.ConvertFrom("#FF707070");
-      btnJavascript.Background = (Brush)bc.ConvertFrom("#FFF");
-      btnJavascript.BorderThickness = new Thickness(1);
-    }
+            btnJavascript.BorderBrush = (Brush)bc.ConvertFrom("#FF707070");
+            btnJavascript.Background = (Brush)bc.ConvertFrom("#FFF");
+            btnJavascript.BorderThickness = new Thickness(1);
+        }
 
-    private void btnFavourites_Click(object sender, RoutedEventArgs e)
-    {
-      ResetSelections();
-      btnFavourites.BorderBrush = (Brush)bc.ConvertFrom("#FF84A8FF");
-      btnFavourites.Background = (Brush)bc.ConvertFrom("#FF84A8FF");
-      btnFavourites.BorderThickness = new Thickness(2);
-      DataFrame.Content = new FavouritesPage();
-    }
+        private async void btnFavourites_Click(object sender, RoutedEventArgs e)
+        {
+            ResetSelections();
+            btnFavourites.BorderBrush = (Brush)bc.ConvertFrom("#FF84A8FF");
+            btnFavourites.Background = (Brush)bc.ConvertFrom("#FF84A8FF");
+            btnFavourites.BorderThickness = new Thickness(2);
+
+            Client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Environment.GetEnvironmentVariable("ACCESS_TOKEN"));
+            var languageconstructs = await Client.GetFromJsonAsync<List<Languageconstruct>>("Languageconstructs");
+            var profileLanguageconstructs = await Client.GetFromJsonAsync<List<Profilelanguageconstruct>>("Profilelanguageconstructs/getByProfile/" + Helpers.ProfileID);
+
+            var languageConstructDTOs = languageconstructs
+            .Where(languageConstruct => profileLanguageconstructs.Any(profileLanguageConstruct => profileLanguageConstruct.Languageconstructid == languageConstruct.Languageconstructid))
+            .Select(languageConstruct => new LanguageConstructDTO
+            {
+                Languageconstructid = languageConstruct.Languageconstructid,
+                Codinglanguage = Enum.GetName(typeof(CodingLanguagesEnum), languageConstruct.Codinglanguageid),
+                Codeconstruct = Enum.GetName(typeof(ConstructEnum), languageConstruct.Codeconstructid),
+                Construct = languageConstruct.Construct
+            })
+            .ToList();
+
+            DataFrame.Content = new FavouritesPage(languageConstructDTOs);
+        }
 
     private async void btnPython_Click(object sender, RoutedEventArgs e)
     {

@@ -6,9 +6,16 @@
       xmlns:local="clr-namespace:CodeLearningSpectaclesWPF.Views"
       mc:Ignorable="d" 
       d:DesignHeight="434.04" d:DesignWidth="533.333333333333"
-      Title="Favourites Page">
+      Title="Favourites Page"
+      Background="#FFEEEEEE">
 
-  <Grid>
-    <Label Content="TODO Favourites Page" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-  </Grid>
+  <ScrollViewer VerticalScrollBarVisibility="Auto">
+    <StackPanel>
+
+      <Label x:Name="FavHeading" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="24" FontWeight="Bold" Foreground="Black" HorizontalContentAlignment="Center" Grid.ColumnSpan="2" Margin="209,0,0,0"/>
+
+      <WrapPanel x:Name="FavWrapPanel" Orientation="Horizontal"/>
+
+    </StackPanel>
+  </ScrollViewer>
 </Page>
