@@ -52,10 +52,6 @@ namespace CodeLearningSpectaclesWPF
         private async void btnFavourites_Click(object sender, RoutedEventArgs e)
         {
             ResetSelections();
-            btnFavourites.BorderBrush = (Brush)bc.ConvertFrom("#FF84A8FF");
-            btnFavourites.Background = (Brush)bc.ConvertFrom("#FF84A8FF");
-            btnFavourites.BorderThickness = new Thickness(2);
-
             Client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Environment.GetEnvironmentVariable("ACCESS_TOKEN"));
             var languageconstructs = await Client.GetFromJsonAsync<List<Languageconstruct>>("Languageconstructs");
             var profileLanguageconstructs = await Client.GetFromJsonAsync<List<Profilelanguageconstruct>>("Profilelanguageconstructs/getByProfile/" + Helpers.ProfileID);
@@ -74,103 +70,93 @@ namespace CodeLearningSpectaclesWPF
             DataFrame.Content = new FavouritesPage(languageConstructDTOs);
         }
 
-        private async void btnPython_Click(object sender, RoutedEventArgs e)
+    private async void btnPython_Click(object sender, RoutedEventArgs e)
+    {
+        Client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Environment.GetEnvironmentVariable("ACCESS_TOKEN"));
+        var languageId = (int)CodingLanguagesEnum.Python;
+        var languageconstructs = await Client.GetFromJsonAsync<List<Languageconstruct>> ("Languageconstructs/getByLanguage/" + languageId.ToString());
+        var profileLanguageconstructs = await Client.GetFromJsonAsync<List<Profilelanguageconstruct>>("Profilelanguageconstructs/getByProfile/" + Helpers.ProfileID);
+
+
+        var languageConstructDTOs = new List<LanguageConstructDTO>();
+
+        foreach (var languageConstruct in languageconstructs)
         {
-            ResetSelections();
-            btnPython.BorderBrush = (Brush)bc.ConvertFrom("#FF84A8FF");
-            btnPython.Background = (Brush)bc.ConvertFrom("#FF84A8FF");
-            btnPython.BorderThickness = new Thickness(2);
-
-            Client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Environment.GetEnvironmentVariable("ACCESS_TOKEN"));
-            var languageId = (int)CodingLanguagesEnum.Python;
-            var languageconstructs = await Client.GetFromJsonAsync<List<Languageconstruct>>("Languageconstructs/getByLanguage/" + languageId.ToString());
-
-            var languageConstructDTOs = new List<LanguageConstructDTO>();
-
-            foreach (var languageConstruct in languageconstructs)
+            var dto = new LanguageConstructDTO
             {
-                var dto = new LanguageConstructDTO
-                {
-                    Languageconstructid = languageConstruct.Languageconstructid,
-                    Codinglanguage = Enum.GetName(typeof(CodingLanguagesEnum), languageConstruct.Codinglanguageid),
-                    Codeconstruct = Enum.GetName(typeof(ConstructEnum), languageConstruct.Codeconstructid),
-                    Construct = languageConstruct.Construct
-                };
+                Languageconstructid = languageConstruct.Languageconstructid,
+                Codinglanguage = Enum.GetName(typeof(CodingLanguagesEnum), languageConstruct.Codinglanguageid),
+                Codeconstruct = Enum.GetName(typeof(ConstructEnum), languageConstruct.Codeconstructid),
+                Construct = languageConstruct.Construct
+            };
 
-                languageConstructDTOs.Add(dto);
-            }
-
-
-            DataFrame.Content = new GeneralPage(languageConstructDTOs);
+            languageConstructDTOs.Add(dto);
         }
 
-        private async void btnCsharp_Click(object sender, RoutedEventArgs e)
+        
+          DataFrame.Content = new GeneralPage(languageConstructDTOs, profileLanguageconstructs);
+    }
+
+    private async void btnCsharp_Click(object sender, RoutedEventArgs e)
+    {
+        Client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Environment.GetEnvironmentVariable("ACCESS_TOKEN"));
+        var languageId = (int)CodingLanguagesEnum.CSharp;
+        var languageconstructs = await Client.GetFromJsonAsync<List<Languageconstruct>> ("Languageconstructs/getByLanguage/" + languageId.ToString());
+        var profileLanguageconstructs = await Client.GetFromJsonAsync<List<Profilelanguageconstruct>>("Profilelanguageconstructs/getByProfile/" + Helpers.ProfileID);
+
+        var languageConstructDTOs = new List<LanguageConstructDTO>();
+
+        foreach (var languageConstruct in languageconstructs)
         {
-            ResetSelections();
-            btnCsharp.BorderBrush = (Brush)bc.ConvertFrom("#FF84A8FF");
-            btnCsharp.Background = (Brush)bc.ConvertFrom("#FF84A8FF");
-            btnCsharp.BorderThickness = new Thickness(2);
-
-            Client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Environment.GetEnvironmentVariable("ACCESS_TOKEN"));
-            var languageId = (int)CodingLanguagesEnum.CSharp;
-            var languageconstructs = await Client.GetFromJsonAsync<List<Languageconstruct>>("Languageconstructs/getByLanguage/" + languageId.ToString());
-
-            var languageConstructDTOs = new List<LanguageConstructDTO>();
-
-            foreach (var languageConstruct in languageconstructs)
+            var dto = new LanguageConstructDTO
             {
-                var dto = new LanguageConstructDTO
-                {
-                    Languageconstructid = languageConstruct.Languageconstructid,
-                    Codinglanguage = Enum.GetName(typeof(CodingLanguagesEnum), languageConstruct.Codinglanguageid),
-                    Codeconstruct = Enum.GetName(typeof(ConstructEnum), languageConstruct.Codeconstructid),
-                    Construct = languageConstruct.Construct
-                };
+                Languageconstructid = languageConstruct.Languageconstructid,
+                Codinglanguage = Enum.GetName(typeof(CodingLanguagesEnum), languageConstruct.Codinglanguageid),
+                Codeconstruct = Enum.GetName(typeof(ConstructEnum), languageConstruct.Codeconstructid),
+                Construct = languageConstruct.Construct
+            };
 
-                languageConstructDTOs.Add(dto);
-            }
-
-
-            DataFrame.Content = new GeneralPage(languageConstructDTOs);
+            languageConstructDTOs.Add(dto);
         }
 
-        private async void btnJavascript_Click(object sender, RoutedEventArgs e)
+      
+        DataFrame.Content = new GeneralPage(languageConstructDTOs, profileLanguageconstructs);
+    }
+
+    private async void btnJavascript_Click(object sender, RoutedEventArgs e)
+    {
+        Client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Environment.GetEnvironmentVariable("ACCESS_TOKEN"));
+        var languageId = (int)CodingLanguagesEnum.JavaScript;
+        var languageconstructs = await Client.GetFromJsonAsync<List<Languageconstruct>>("Languageconstructs/getByLanguage/" + languageId.ToString());
+        var profileLanguageconstructs = await Client.GetFromJsonAsync<List<Profilelanguageconstruct>>("Profilelanguageconstructs/getByProfile/" + Helpers.ProfileID);
+
+
+        var languageConstructDTOs = new List<LanguageConstructDTO>();
+
+        foreach (var languageConstruct in languageconstructs)
         {
-            ResetSelections();
-            btnJavascript.BorderBrush = (Brush)bc.ConvertFrom("#FF84A8FF");
-            btnJavascript.Background = (Brush)bc.ConvertFrom("#FF84A8FF");
-            btnJavascript.BorderThickness = new Thickness(2);
-
-            Client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Environment.GetEnvironmentVariable("ACCESS_TOKEN"));
-            var languageId = (int)CodingLanguagesEnum.JavaScript;
-            var languageconstructs = await Client.GetFromJsonAsync<List<Languageconstruct>>("Languageconstructs/getByLanguage/" + languageId.ToString());
-
-            var languageConstructDTOs = new List<LanguageConstructDTO>();
-
-            foreach (var languageConstruct in languageconstructs)
+            var dto = new LanguageConstructDTO
             {
-                var dto = new LanguageConstructDTO
-                {
-                    Languageconstructid = languageConstruct.Languageconstructid,
-                    Codinglanguage = Enum.GetName(typeof(CodingLanguagesEnum), languageConstruct.Codinglanguageid),
-                    Codeconstruct = Enum.GetName(typeof(ConstructEnum), languageConstruct.Codeconstructid),
-                    Construct = languageConstruct.Construct
-                };
+                Languageconstructid = languageConstruct.Languageconstructid,
+                Codinglanguage = Enum.GetName(typeof(CodingLanguagesEnum), languageConstruct.Codinglanguageid),
+                Codeconstruct = Enum.GetName(typeof(ConstructEnum), languageConstruct.Codeconstructid),
+                Construct = languageConstruct.Construct
+            };
 
-                languageConstructDTOs.Add(dto);
-            }
-
-
-            DataFrame.Content = new GeneralPage(languageConstructDTOs);
+            languageConstructDTOs.Add(dto);
         }
+
+       
+        DataFrame.Content = new GeneralPage(languageConstructDTOs, profileLanguageconstructs);
+    }
 
         private void btnExit_Click(object sender, RoutedEventArgs e)
-        {
-            ResetSelections();
-            DataFrame.Content = null;
-            LoginWindow window = new LoginWindow();
-            window.Show();
-            this.Close();
-        }
+    {
+      ResetSelections();
+      DataFrame.Content = null;
+      LoginWindow window = new LoginWindow();
+      window.Show();
+      this.Close();
     }
+  }
 }

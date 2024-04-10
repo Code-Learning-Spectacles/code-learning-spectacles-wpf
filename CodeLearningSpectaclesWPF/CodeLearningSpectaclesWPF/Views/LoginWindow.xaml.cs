@@ -58,7 +58,7 @@ namespace CodeLearningSpectaclesWPF
                 if (deviceVerification != null)
                 {
                     btnCopyCode.Visibility = Visibility.Visible;
-                    ViewModel.MessageStart = "Please go to";
+                    ViewModel.MessageStart = "Please go to:";
                     ViewModel.UrlMessage = deviceVerification.verification_uri;
                     ViewModel.MessageEnd = "and enter the code: " + deviceVerification.user_code;
                     btnCopyCode.Content = "Copy Code";

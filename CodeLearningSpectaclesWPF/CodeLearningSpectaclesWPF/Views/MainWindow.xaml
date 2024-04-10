@@ -6,19 +6,24 @@
         xmlns:local="clr-namespace:CodeLearningSpectaclesWPF"
         mc:Ignorable="d"
         Title="Code Learning Spectacles" Height="450" Width="800" MinHeight="450" MinWidth="800" WindowStartupLocation="CenterScreen">
-  <Grid Background="AliceBlue">
+    <Grid Background="#8697ad">
     <Grid.ColumnDefinitions>
       <ColumnDefinition Width="*"></ColumnDefinition>
       <ColumnDefinition Width="2*"></ColumnDefinition>
     </Grid.ColumnDefinitions>
-    <!-- First Column (Data selection) -->
+    
+        
     <ScrollViewer VerticalScrollBarVisibility="Auto">
       <StackPanel Grid.Column="0" Margin="30,20,30,20" VerticalAlignment="Center">
-        <Button x:Name="btnExit" Padding="10" Content="Exit" Background="White" IsEnabled="True" Click="btnExit_Click" HorizontalAlignment="Right" BorderBrush="#FFFF5050"/>
-        <TextBlock x:Name="lblWelcome" Text="Hi " Grid.Column="0" Grid.Row="0" Foreground="#FF84A8FF"  Margin="0,0,0,20" FontSize="16" TextWrapping="Wrap"/>
-        <Button x:Name="btnFavourites" Padding="10" Content="Favourites" Background="White" IsEnabled="True" Click="btnFavourites_Click"/>
+            <Button x:Name="btnExit" Padding="10" Content="Exit" Background="White" IsEnabled="True" Click="btnExit_Click" HorizontalAlignment="Right" BorderBrush="#FFFF5050"/>
+            <TextBlock x:Name="lblWelcome"  Text="Hi " Grid.Column="0" Foreground="White" Grid.Row="0" FontWeight="Bold" Margin="0,0,0,20" FontSize="20" TextWrapping="Wrap">
+                <TextBlock.Effect>
+                    <DropShadowEffect ShadowDepth="0" Color="Black" BlurRadius="1"/>
+                </TextBlock.Effect>
+            </TextBlock>
+        <Button x:Name="btnFavourites" Padding="10" Content="View favourites" Background="White" IsEnabled="True" Click="btnFavourites_Click"/>
         <Label Margin="10" HorizontalContentAlignment="Center">
-          <Path Stroke="#FF84A8FF" Fill="#FFF1F1F1" StrokeThickness="2" Data="M 10,0 L 20,10 L 10,20 L 0,10 Z"/>
+        <Path Stroke="#474c54" Fill="#FFF1F1F1" StrokeThickness="2" Data="M 10,0 L 20,10 L 10,20 L 0,10 Z"/>
         </Label>
         <Button x:Name="btnPython" Padding="10" Content="Python" Background="White" Click="btnPython_Click" Margin="0,0,0,20"/>
 
@@ -27,7 +32,7 @@
         <Button x:Name="btnCsharp" Padding="10" Content="C#" Background="White" Click="btnCsharp_Click" Margin="0,0,0,20"/>
       </StackPanel>
     </ScrollViewer>
-    <!-- Second Column (Data input, display) -->
-    <Frame x:Name="DataFrame" Grid.Column="1" Background="#FFEEEEEE" NavigationUIVisibility="Hidden"></Frame>
+    
+    <Frame x:Name="DataFrame" Grid.Column="1" Background="white" NavigationUIVisibility="Hidden"></Frame>
   </Grid>
 </Window>
