@@ -8,13 +8,30 @@
       d:DesignHeight="434.04" d:DesignWidth="533.333333333333"
       Title="General Page"
        Background="white">
-    <ScrollViewer VerticalScrollBarVisibility="Auto">
-        <StackPanel>
-            
-            <Label x:Name="Heading" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="24" FontWeight="Bold" Foreground="Black" HorizontalContentAlignment="Center" Grid.ColumnSpan="2" Margin="209,0,0,0"/>
+    <Grid>
+        <ScrollViewer VerticalScrollBarVisibility="Auto">
+            <StackPanel>
+                <Label x:Name="Heading" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="24" FontWeight="Bold" Foreground="Black" HorizontalContentAlignment="Center" Grid.ColumnSpan="2" Margin="209,0,0,0"/>
 
-            <WrapPanel x:Name="MainWrapPanel" Orientation="Horizontal"/>
-            
-        </StackPanel>
-    </ScrollViewer>
+                <WrapPanel x:Name="MainWrapPanel" Orientation="Horizontal"/>
+
+            </StackPanel>
+        </ScrollViewer>
+
+        <Popup x:Name="popup" Placement="Center" Width="200" Height="150" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <Border BorderBrush="Black" BorderThickness="2" Background="AliceBlue">
+                <StackPanel>
+                    <Label x:Name="inputLabel" Visibility="Hidden"></Label>
+                    <Label Content="Enter a note:" Margin="10"/>
+                    <TextBox x:Name="txtBox" VerticalAlignment="Center" Margin="10"/>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="10">
+                        <Button Content="Save" Click="SaveButton_Click" Margin="5"/>
+                        <Button Content="Cancel" Click="CancelButton_Click" Margin="5"/>
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+        </Popup>
+    </Grid>
+
+
 </Page>
