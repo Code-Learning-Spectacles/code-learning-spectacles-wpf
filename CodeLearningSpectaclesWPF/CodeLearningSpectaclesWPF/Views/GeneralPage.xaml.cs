@@ -74,7 +74,7 @@ namespace CodeLearningSpectaclesWPF.Views
                     Button favouriteButton = new Button();
                     var favButtonId = "favouriteButton" + dto.Languageconstructid.ToString();
 
-                    favouriteButton.Content = alreadySaved ? "Add to Favourites" : "Saved";
+                    favouriteButton.Content = !alreadySaved ? "Add to Favourites" : "Saved";
                     favouriteButton.Margin = new Thickness(5);
                     favouriteButton.Padding = new Thickness(3);
                     favouriteButton.IsEnabled = !alreadySaved;
