@@ -6,6 +6,7 @@ using System.Net.Http.Json;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using System.Text.RegularExpressions;
 
 namespace CodeLearningSpectaclesWPF.Views
 {
@@ -90,7 +91,6 @@ namespace CodeLearningSpectaclesWPF.Views
                         try
                         {
                             var response = await Client.PostAsJsonAsync("Profilelanguageconstructs", profileLanguageConstruct);
-
                             if (response.IsSuccessStatusCode)
                             {
                                 MessageBox.Show("Construct successfully saved!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
@@ -195,6 +195,7 @@ namespace CodeLearningSpectaclesWPF.Views
 
                     Button favNoteButton = buttons[favNoteButtonId];
                     favNoteButton.IsEnabled = false;
+                    favNoteButton.Visibility = Visibility.Hidden;
                     favNoteButton.Content = "Saved";
 
                     txtBox.Text = "";
