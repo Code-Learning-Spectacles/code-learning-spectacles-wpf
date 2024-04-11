@@ -32,10 +32,10 @@
         <Button x:Name="btnLogout" Content="Logout"  Grid.Row="5" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Top" Padding="10" Background="White" FontWeight="Bold" Visibility="Hidden" Click="Logout_Click" Width="81" Margin="0,4,0,0"/>
         <Label x:Name="lblMessageStart" Content="{Binding Path=MessageStart, Mode=OneWay}" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Row="1" FontWeight="Bold" FontSize="18" Width="500" Grid.ColumnSpan="2" Margin="10,43,0,0" Grid.RowSpan="2"/>
         <TextBlock Margin="17,35,150,44" Grid.RowSpan="3" Grid.Row="2" Grid.ColumnSpan="2" FontSize="18">
-            <Hyperlink x:Name="hypVerification" NavigateUri="{Binding Path=UrlMessage, Mode=OneWay}" RequestNavigate="Hyperlink_RequestNavigate">
-        <TextBlock Text="{Binding Path=UrlMessage, Mode=OneWay}" FontWeight="Bold" Width="380"/>
-      </Hyperlink>
-    </TextBlock>
+            <Hyperlink TextDecorations="{x:Null}" x:Name="hypVerification" NavigateUri="{Binding Path=UrlMessage, Mode=OneWay}" RequestNavigate="Hyperlink_RequestNavigate">
+                <TextBlock Text="{Binding Path=UrlMessage, Mode=OneWay}" FontWeight="Bold" Width="380"/>
+            </Hyperlink>
+        </TextBlock>
         <Label x:Name="lblMessageEnd" Content="{Binding Path=MessageEnd, Mode=OneWay}" HorizontalAlignment="Left" FontWeight="Bold"  VerticalAlignment="Top" FontSize="18" Margin="13,19,0,0" Grid.ColumnSpan="2" Grid.Row="3" Grid.RowSpan="2"/>
         <Button x:Name="btnCopyCode" FontSize="12" Content="Copy Code"  Grid.Row="3" HorizontalAlignment="Left" FontWeight="Bold" VerticalAlignment="Top" Visibility="Hidden" Padding="10" Click="CopyCode_Click" Margin="293,22,0,0" Grid.RowSpan="2" Grid.ColumnSpan="2" Background="White" Width="84" Height="40" RenderTransformOrigin="0.509,0.432"/>
 

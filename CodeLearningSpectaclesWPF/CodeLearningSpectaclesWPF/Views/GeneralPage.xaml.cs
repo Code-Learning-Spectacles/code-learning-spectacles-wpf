@@ -68,7 +68,10 @@ namespace CodeLearningSpectaclesWPF.Views
 
                 TextBox inputTextBox = new TextBox();
                 inputTextBox.Margin = new Thickness(5);
-                inputTextBox.IsEnabled = !profileLanguageconstructs.Any(plc => plc.Languageconstructid == dto.Languageconstructid);
+                var matchingProfile = profileLanguageconstructs.FirstOrDefault(plc => plc.Languageconstructid == dto.Languageconstructid);
+                inputTextBox.Text = matchingProfile != null ? matchingProfile.Notes : "";
+                inputTextBox.IsEnabled = matchingProfile != null ? false : true;
+
 
                 Button copyButton = new Button();
                 copyButton.Content = "Copy Code";
@@ -78,6 +81,7 @@ namespace CodeLearningSpectaclesWPF.Views
                 {
                     string textToCopy = constructTextBlock.Text;
                     Clipboard.SetText(textToCopy);
+                    MessageBox.Show("Copied to clipboard!", "Copied", MessageBoxButton.OK, MessageBoxImage.Information);
                 };
 
                 Button favouriteButton = new Button();
@@ -111,7 +115,7 @@ namespace CodeLearningSpectaclesWPF.Views
                     }
                     catch (Exception ex)
                     {
-                        
+                        MessageBox.Show("There was an error saving your selection. Please try again.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                     }
                 };
 
