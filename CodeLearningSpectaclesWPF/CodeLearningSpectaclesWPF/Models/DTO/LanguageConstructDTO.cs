@@ -16,7 +16,6 @@ namespace CodeLearningSpectaclesWPF.Models.DTO
 
         public string Construct { get; set; } = null!;
 
-
     }
 
 
