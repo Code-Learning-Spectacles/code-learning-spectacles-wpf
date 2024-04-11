@@ -187,6 +187,8 @@ namespace CodeLearningSpectaclesWPF.Views
                     favNoteButton.IsEnabled = false;
                     favNoteButton.Content = "Saved";
 
+                    txtBox.Text = "";
+
                 }
 
             }
@@ -204,7 +206,8 @@ namespace CodeLearningSpectaclesWPF.Views
 
         private void CancelButton_Click(object sender, RoutedEventArgs e)
         {
-            popup.IsOpen = false; 
+            popup.IsOpen = false;
+            txtBox.Text = "";
         }
     }
 }
