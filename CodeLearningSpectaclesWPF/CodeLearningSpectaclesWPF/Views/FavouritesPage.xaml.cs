@@ -22,7 +22,7 @@ namespace CodeLearningSpectaclesWPF.Views
 
         private static HttpClient Client = new HttpClient()
         {
-            BaseAddress = new Uri("https://localhost:7107/api/v1/")
+            BaseAddress = new Uri("http://API-env.eba-8bvi8xmn.eu-west-1.elasticbeanstalk.com/api/v1/")
         };
 
         public FavouritesPage(List<LanguageConstructDTO> languageconstructDTOs, List<Profilelanguageconstruct> profileLanguageconstructs)
