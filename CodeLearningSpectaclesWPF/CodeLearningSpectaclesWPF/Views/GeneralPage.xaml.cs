@@ -1,24 +1,11 @@
-﻿using CodeLearningSpectaclesWPF;
-using CodeLearningSpectaclesWPF.Models;
+﻿using CodeLearningSpectaclesWPF.Models;
 using CodeLearningSpectaclesWPF.Models.DTO;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace CodeLearningSpectaclesWPF.Views
 {
@@ -28,7 +15,8 @@ namespace CodeLearningSpectaclesWPF.Views
     {
 
         private List<LanguageConstructDTO> languageConstructDTOs;
-        private List<Profilelanguageconstruct> profileLanguageconstructs;  
+        private List<Profilelanguageconstruct> profileLanguageconstructs;
+        private readonly Dictionary<string, Button> buttons = new Dictionary<string, Button>();
 
         private static HttpClient Client = new HttpClient()
         {
@@ -45,6 +33,7 @@ namespace CodeLearningSpectaclesWPF.Views
             foreach (var dto in languageConstructDTOs)
             {
                 StackPanel stackPanel = new StackPanel();
+                StackPanel buttonsPanel = new StackPanel();
 
                 Label codeLabel = new Label();
                 codeLabel.Content = dto.Codeconstruct;
@@ -53,6 +42,8 @@ namespace CodeLearningSpectaclesWPF.Views
 
                 TextBlock constructTextBlock = new TextBlock();
                 constructTextBlock.Text = dto.Construct;
+                constructTextBlock.FontSize = 16;
+                constructTextBlock.Padding = new Thickness(5, 3, 5, 3);
                 constructTextBlock.TextWrapping = TextWrapping.Wrap;
 
                 Border horizontalLine = new Border();
@@ -72,8 +63,11 @@ namespace CodeLearningSpectaclesWPF.Views
                 };
 
                 Button favouriteButton = new Button();
+                var favButtonId = "favouriteButton" + dto.Languageconstructid.ToString();
+               
                 favouriteButton.Content = !profileLanguageconstructs.Any(plc => plc.Languageconstructid == dto.Languageconstructid) ? "Add to Favourites" : "Saved";
                 favouriteButton.Margin = new Thickness(5);
+                favouriteButton.Padding = new Thickness(3);
                 favouriteButton.IsEnabled = !profileLanguageconstructs.Any(plc => plc.Languageconstructid == dto.Languageconstructid);
                 favouriteButton.Background = Brushes.White;
                 favouriteButton.Click += async (sender, e) =>
@@ -85,7 +79,6 @@ namespace CodeLearningSpectaclesWPF.Views
 
                         Languageconstructid = dto.Languageconstructid,
                         Profileid = Convert.ToInt32(Helpers.ProfileID),
-                        //Notes = inputTextBox.Text
                     };
 
                     try
@@ -94,9 +87,15 @@ namespace CodeLearningSpectaclesWPF.Views
 
                         if (response.IsSuccessStatusCode)
                         {
-                            //inputTextBox.IsEnabled = false;
+                            MessageBox.Show("Construct successfully saved!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
                             favouriteButton.Content = "Saved";
                             favouriteButton.IsEnabled = false;
+
+                            var buttonId = "favouriteNoteButton" + dto.Languageconstructid.ToString();
+                            Button favNoteButton = buttons[buttonId];
+                            favNoteButton.IsEnabled = false;
+                            favNoteButton.Content = "Saved";
+
                         }
 
                     }
@@ -106,10 +105,14 @@ namespace CodeLearningSpectaclesWPF.Views
                     }
                    
                 };
+                buttons.Add(favButtonId, favouriteButton);
 
                 Button favouriteNoteButton = new Button();
+                var favNoteButtonId = "favouriteNoteButton" + dto.Languageconstructid.ToString();
+                favouriteNoteButton.Name = favNoteButtonId;
                 favouriteNoteButton.Content = !profileLanguageconstructs.Any(plc => plc.Languageconstructid == dto.Languageconstructid) ? "Save with Note" : "Saved";
                 favouriteNoteButton.Margin = new Thickness(5);
+                favouriteNoteButton.Padding = new Thickness(3);
                 favouriteNoteButton.IsEnabled = !profileLanguageconstructs.Any(plc => plc.Languageconstructid == dto.Languageconstructid);
                 favouriteNoteButton.Background = Brushes.White;
                 favouriteNoteButton.Click += async (sender, e) =>
@@ -118,8 +121,9 @@ namespace CodeLearningSpectaclesWPF.Views
                     popup.IsOpen = true;
                    
                 };
+                buttons.Add(favNoteButtonId, favouriteNoteButton);
 
-                StackPanel buttonsPanel = new StackPanel();
+
                 buttonsPanel.Orientation = Orientation.Horizontal;
                 buttonsPanel.Children.Add(favouriteButton);
                 buttonsPanel.Children.Add(favouriteNoteButton);
@@ -170,18 +174,30 @@ namespace CodeLearningSpectaclesWPF.Views
 
                 if (response.IsSuccessStatusCode)
                 {
-                    InitializeComponent();
+                    popup.IsOpen = false;
+                    MessageBox.Show("Construct successfully saved!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+                    var favButtonId = "favouriteButton" + inputLabel.Content;
+                    var favNoteButtonId ="favouriteNoteButton" + inputLabel.Content;
+                    
+                    Button favButton = buttons[favButtonId];
+                    favButton.IsEnabled = false;
+                    favButton.Content = "Saved";
+
+                    Button favNoteButton = buttons[favNoteButtonId];
+                    favNoteButton.IsEnabled = false;
+                    favNoteButton.Content = "Saved";
 
                 }
 
             }
             catch (Exception ex)
             {
+                popup.IsOpen = false;
                 MessageBox.Show("There was an error saving your selection. Please try again.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
 
 
-            popup.IsOpen = false;
+           
 
 
         }

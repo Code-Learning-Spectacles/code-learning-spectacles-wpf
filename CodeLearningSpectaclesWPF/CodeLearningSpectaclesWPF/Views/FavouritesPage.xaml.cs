@@ -1,24 +1,12 @@
 ﻿using CodeLearningSpectaclesWPF.Models;
 using CodeLearningSpectaclesWPF.Models.DTO;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Net.Http.Json;
 using System.Text;
 using System.Text.Json;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using System.Xml.Linq;
 
 namespace CodeLearningSpectaclesWPF.Views
 {
@@ -54,6 +42,8 @@ namespace CodeLearningSpectaclesWPF.Views
 
                 TextBlock constructTextBlock = new TextBlock();
                 constructTextBlock.Text = dto.Construct;
+                constructTextBlock.FontSize = 16;
+                constructTextBlock.Padding = new Thickness(5,3,5,3);
                 constructTextBlock.TextWrapping = TextWrapping.Wrap;
 
                 Border horizontalLine = new Border();
@@ -65,14 +55,21 @@ namespace CodeLearningSpectaclesWPF.Views
                 noteLabel.Content = "Note:";
                 noteLabel.FontSize = 14;
 
+                Button editButton = new Button();
                 TextBox inputTextBox = new TextBox();
                 inputTextBox.Margin = new Thickness(5);
                 inputTextBox.TextWrapping = TextWrapping.Wrap;
                 inputTextBox.Text = profileLanguageConstruct == null ? "" : profileLanguageConstruct.Notes;
+                inputTextBox.TextChanged += (sender, e) =>
+                {
+                    editButton.IsEnabled = true;
+                };
 
-                Button editButton = new Button();
-                editButton.Content = "Edit";
+               
+                editButton.Content = "Edit Note";
+                editButton.IsEnabled = false;
                 editButton.Margin = new Thickness(5);
+                editButton.Padding = new Thickness(3);
                 editButton.Background = Brushes.White;
                 editButton.Click += async (sender, e) =>
                 {
@@ -92,16 +89,22 @@ namespace CodeLearningSpectaclesWPF.Views
                         }
                         else
                         {
-                            MessageBox.Show("Updated successfully", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+                            MessageBox.Show("Updated successfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+                            editButton.IsEnabled = false;
                         }
                     }
                 };
 
-                Button favouriteButton = new Button();
-                favouriteButton.Content = "Remove";
-                favouriteButton.Margin = new Thickness(5);
-                favouriteButton.Background = Brushes.White;
-                favouriteButton.Click += async (sender, e) =>
+               
+
+                Button removeButton = new Button();
+                removeButton.HorizontalAlignment = HorizontalAlignment.Stretch;
+                removeButton.Content = "Remove from Favourites";
+                removeButton.Margin = new Thickness(5);
+                removeButton.Padding = new Thickness(3);
+                removeButton.BorderBrush = new SolidColorBrush(Colors.Red);
+                removeButton.Background = Brushes.White;
+                removeButton.Click += async (sender, e) =>
                 {
                     //When click do api call to remove this language construct and note from user faves
                     if (profileLanguageConstruct != null)
@@ -109,9 +112,9 @@ namespace CodeLearningSpectaclesWPF.Views
                         var response = await Client.DeleteAsync("Profilelanguageconstructs/" + profileLanguageConstruct.Profilelanguageconstructid);
                         if (response.IsSuccessStatusCode)
                         {
-                            favouriteButton.Content = "Removed";
+                            removeButton.Content = "Removed";
                             inputTextBox.IsEnabled = false;
-                            favouriteButton.IsEnabled = false;
+                            removeButton.IsEnabled = false;
                             editButton.IsEnabled = false;
                         }
                         else
@@ -121,13 +124,32 @@ namespace CodeLearningSpectaclesWPF.Views
                     }
                 };
 
+                Button copyButton = new Button();
+                copyButton.HorizontalAlignment = HorizontalAlignment.Stretch;
+                copyButton.Content = "Copy Code";
+                copyButton.Margin = new Thickness(5);
+                copyButton.Padding = new Thickness(3);
+
+                copyButton.Background = Brushes.White;
+                copyButton.Click += (sender, e) =>
+                {
+                    string textToCopy = constructTextBlock.Text;
+                    Clipboard.SetText(textToCopy);
+                    MessageBox.Show("Copied to clipboard!", "Copied", MessageBoxButton.OK, MessageBoxImage.Information);
+                };
+
+              
+
                 stackPanel.Children.Add(codeLabel);
                 stackPanel.Children.Add(constructTextBlock);
                 stackPanel.Children.Add(horizontalLine);
+                stackPanel.Children.Add(copyButton);
                 stackPanel.Children.Add(noteLabel);
                 stackPanel.Children.Add(inputTextBox);
                 stackPanel.Children.Add(editButton);
-                stackPanel.Children.Add(favouriteButton);
+                stackPanel.Children.Add(removeButton);
+             
+
                 stackPanel.Background = Brushes.White;
 
                 Border border = new Border();
@@ -144,8 +166,8 @@ namespace CodeLearningSpectaclesWPF.Views
                         PythonHeading.Content = dto.Codinglanguage;
                         PythonWrapPanel.Children.Add(border);
                         break;
-                    case "C#":
-                        CsharpHeading.Content = dto.Codinglanguage;
+                    case "CSharp":
+                        CsharpHeading.Content = "C#";
                         CsharpWrapPanel.Children.Add(border);
                         break;
                     case "JavaScript":
