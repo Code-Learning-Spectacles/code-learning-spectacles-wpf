@@ -80,8 +80,6 @@ jobs:
 
       - name: Build DOTNET Release
         working-directory: "./CodeLearningSpectaclesWPF"
-        env:
-          BASE_ADDRESS: ${{ secrets.BASE_ADDRESS }}
         run: |
           dotnet publish -r win-x64 -p:PublishSingleFile=true --self-contained true -c Release
           Compress-Archive -Path "CodeLearningSpectaclesWPF/bin/Release/net8.0-windows/win-x64/publish" -DestinationPath "wpf-windows-x64.zip"
