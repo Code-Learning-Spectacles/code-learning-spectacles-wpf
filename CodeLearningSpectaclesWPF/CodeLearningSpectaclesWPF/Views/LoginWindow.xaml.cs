@@ -46,7 +46,7 @@ namespace CodeLearningSpectaclesWPF
         {
             if (Environment.GetEnvironmentVariable("ACCESS_TOKEN") != null)
             {
-                MessageBox.Show("Login Success");
+                MessageBox.Show("Login Success", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
                 MainWindow window = new MainWindow();
                 window.Show();
                 this.Close();
@@ -70,14 +70,14 @@ namespace CodeLearningSpectaclesWPF
                         success = await Helpers.GetAccessTokenAsync(Client, deviceVerification);
                     }
                     Helpers.Profile = await GetProfileAsync();
-                    MessageBox.Show("Login Success");
+                    MessageBox.Show("Login Success", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
                     MainWindow window = new MainWindow();
                     window.Show();
                     this.Close();
                 }
                 else
                 {
-                    MessageBox.Show("Login Success");
+                    MessageBox.Show("Login Success", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
                 }
             }
         }

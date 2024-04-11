@@ -9,13 +9,21 @@
       Title="Favourites Page"
       Background="#FFEEEEEE">
 
-  <ScrollViewer VerticalScrollBarVisibility="Auto">
-    <StackPanel>
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <StackPanel>
 
-      <Label x:Name="FavHeading" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="24" FontWeight="Bold" Foreground="Black" HorizontalContentAlignment="Center" Grid.ColumnSpan="2" Margin="209,0,0,0"/>
+            <Label x:Name="PythonHeading" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="24" FontWeight="Bold" Foreground="Black" HorizontalContentAlignment="Center" Grid.ColumnSpan="2" Margin="209,0,0,0"/>
 
-      <WrapPanel x:Name="FavWrapPanel" Orientation="Horizontal"/>
+            <WrapPanel x:Name="PythonWrapPanel" Orientation="Horizontal"/>
 
-    </StackPanel>
-  </ScrollViewer>
+            <Label x:Name="JavascriptHeading" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="24" FontWeight="Bold" Foreground="Black" HorizontalContentAlignment="Center" Grid.ColumnSpan="2" Margin="209,0,0,0"/>
+
+            <WrapPanel x:Name="JavascriptWrapPanel" Orientation="Horizontal"/>
+
+            <Label x:Name="CsharpHeading" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="24" FontWeight="Bold" Foreground="Black" HorizontalContentAlignment="Center" Grid.ColumnSpan="2" Margin="209,0,0,0"/>
+
+            <WrapPanel x:Name="CsharpWrapPanel" Orientation="Horizontal"/>
+
+        </StackPanel>
+    </ScrollViewer>
 </Page>

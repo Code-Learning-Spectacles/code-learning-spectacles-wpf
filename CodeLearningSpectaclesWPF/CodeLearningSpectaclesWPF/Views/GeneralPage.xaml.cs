@@ -24,10 +24,9 @@ namespace CodeLearningSpectaclesWPF.Views
 
     public partial class GeneralPage : Page
     {
+
         private List<LanguageConstructDTO> languageConstructDTOs;
         private List<Profilelanguageconstruct> profileLanguageconstructs;
-
-
 
         private static HttpClient Client = new HttpClient()
         {
@@ -38,10 +37,8 @@ namespace CodeLearningSpectaclesWPF.Views
         {
             this.languageConstructDTOs = languageconstructDTOs;
             this.profileLanguageconstructs = profileLanguageconstructs;
+
             InitializeComponent();
-
-
-
 
             foreach (var dto in languageConstructDTOs)
             {
@@ -60,19 +57,7 @@ namespace CodeLearningSpectaclesWPF.Views
                 horizontalLine.BorderThickness = new Thickness(0, 1, 0, 0);
                 horizontalLine.BorderBrush = Brushes.Black;
                 horizontalLine.Margin = new Thickness(15);
-
-
-                Label noteLabel = new Label();
-                noteLabel.Content = "Add Note:";
-                noteLabel.FontSize = 14;
-
-                TextBox inputTextBox = new TextBox();
-                inputTextBox.Margin = new Thickness(5);
-                var matchingProfile = profileLanguageconstructs.FirstOrDefault(plc => plc.Languageconstructid == dto.Languageconstructid);
-                inputTextBox.Text = matchingProfile != null ? matchingProfile.Notes : "";
-                inputTextBox.IsEnabled = matchingProfile != null ? false : true;
-
-
+                
                 Button copyButton = new Button();
                 copyButton.Content = "Copy Code";
                 copyButton.Margin = new Thickness(5);
@@ -98,7 +83,7 @@ namespace CodeLearningSpectaclesWPF.Views
                         
                         Languageconstructid = dto.Languageconstructid,
                         Profileid = Convert.ToInt32(Helpers.ProfileID),
-                        Notes = inputTextBox.Text
+                        //Notes = inputTextBox.Text
                     };
 
                     try
@@ -107,7 +92,7 @@ namespace CodeLearningSpectaclesWPF.Views
 
                         if (response.IsSuccessStatusCode)
                         {
-                            inputTextBox.IsEnabled = false;
+                            //inputTextBox.IsEnabled = false;
                             favouriteButton.Content = "Saved";
                             favouriteButton.IsEnabled = false;
                         }
@@ -127,8 +112,6 @@ namespace CodeLearningSpectaclesWPF.Views
                 stackPanel.Children.Add(codeLabel);
                 stackPanel.Children.Add(constructTextBlock);
                 stackPanel.Children.Add(horizontalLine);
-                stackPanel.Children.Add(noteLabel);
-                stackPanel.Children.Add(inputTextBox);
                 stackPanel.Children.Add(buttonsPanel);
                 stackPanel.Background = Brushes.White;
 
