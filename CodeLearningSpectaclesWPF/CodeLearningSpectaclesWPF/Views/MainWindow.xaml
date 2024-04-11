@@ -33,6 +33,6 @@
             </StackPanel>
         </ScrollViewer>
 
-        <Frame x:Name="DataFrame" Grid.Column="1" Background="white" NavigationUIVisibility="Hidden"></Frame>
+        <Frame x:Name="DataFrame" Grid.Column="1" Background="#FFEEEEEE" NavigationUIVisibility="Hidden"></Frame>
     </Grid>
 </Window>
