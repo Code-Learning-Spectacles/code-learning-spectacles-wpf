@@ -57,7 +57,7 @@ namespace CodeLearningSpectaclesWPF.Views
                 horizontalLine.BorderThickness = new Thickness(0, 1, 0, 0);
                 horizontalLine.BorderBrush = Brushes.Black;
                 horizontalLine.Margin = new Thickness(15);
-
+                
                 Button copyButton = new Button();
                 copyButton.Content = "Copy Code";
                 copyButton.Margin = new Thickness(5);
@@ -66,6 +66,7 @@ namespace CodeLearningSpectaclesWPF.Views
                 {
                     string textToCopy = constructTextBlock.Text;
                     Clipboard.SetText(textToCopy);
+                    MessageBox.Show("Copied to clipboard!", "Copied", MessageBoxButton.OK, MessageBoxImage.Information);
                 };
 
                 Button favouriteButton = new Button();
@@ -99,7 +100,7 @@ namespace CodeLearningSpectaclesWPF.Views
                     }
                     catch (Exception ex)
                     {
-                        
+                        MessageBox.Show("There was an error saving your selection. Please try again.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                     }
                 };
 
