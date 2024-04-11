@@ -8,6 +8,7 @@ using System.Text;
 using System.Text.Json;
 using System.Windows;
 using System.Windows.Navigation;
+using System.Xml.Linq;
 
 namespace CodeLearningSpectaclesWPF
 {
@@ -24,6 +25,7 @@ namespace CodeLearningSpectaclesWPF
 
         private DeviceVerification? deviceVerification;
         private LoginViewModel ViewModel { get; set; }
+        private bool loginError = false;
 
         public LoginWindow()
         {
@@ -34,12 +36,29 @@ namespace CodeLearningSpectaclesWPF
 
         private async void Login_Click(object sender, RoutedEventArgs e)
         {
+            btnLogin.IsEnabled = false;
             if (Environment.GetEnvironmentVariable("ACCESS_TOKEN") != null)
             {
-                MessageBox.Show("Login Success", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
-                MainWindow window = new MainWindow();
-                window.Show();
-                this.Close();
+                if (loginError)
+                {
+                    Helpers.Profile = await GetProfileAsync();
+                    if (Helpers.ProfileID != null && loginError == false)
+                    {
+                        Environment.SetEnvironmentVariable("USERNAME", Helpers.Profile.login);
+                        MessageBox.Show("Login Success", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+                        MainWindow window = new MainWindow();
+                        window.Show();
+                        this.Close();
+                    }
+                }
+                else
+                {
+                    var test = Helpers.ProfileID;
+                    MessageBox.Show("Login Success", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+                    MainWindow window = new MainWindow();
+                    window.Show();
+                    this.Close();
+                }
             }
             else
             {
@@ -60,26 +79,34 @@ namespace CodeLearningSpectaclesWPF
                         success = await Helpers.GetAccessTokenAsync(Client, deviceVerification);
                     }
                     Helpers.Profile = await GetProfileAsync();
-                    MessageBox.Show("Login Success", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
-                    MainWindow window = new MainWindow();
-                    window.Show();
-                    this.Close();
+                    if (Helpers.Profile != null)
+                    {
+                        MessageBox.Show("Login Success", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+                        MainWindow window = new MainWindow();
+                        window.Show();
+                        this.Close();
+                    }
+                    else
+                    {
+                        MessageBox.Show("Login Failed", "Fail", MessageBoxButton.OK, MessageBoxImage.Error);
+                        loginError = true;
+                    }
                 }
                 else
                 {
-                    MessageBox.Show("Login Success", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+                    MessageBox.Show("Login Failed", "Fail", MessageBoxButton.OK, MessageBoxImage.Error);
+                    loginError = true;
                 }
             }
         }
 
-        private async void CheckProfile(string name)
+        private async Task CheckProfile(string name)
         {
             try
             {
                 Client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Environment.GetEnvironmentVariable("ACCESS_TOKEN"));
                 Client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
                 var profiles = await Client.GetFromJsonAsync<List<Profile>>("Profiles");
-                Console.WriteLine(profiles);
                 if (profiles != null && profiles.Count > 0)
                 {
                     var profile = profiles.Find(x => x.Name.Equals(name));
@@ -88,19 +115,41 @@ namespace CodeLearningSpectaclesWPF
                         // Create profile for user
                         using StringContent jsonContent = new(JsonSerializer.Serialize(new { Name = name }), Encoding.UTF8, "application/json");
                         using HttpResponseMessage createProfileResponse = await Client.PostAsync("Profiles", jsonContent);
-                        Profile? newProfile = await createProfileResponse.Content.ReadFromJsonAsync<Profile>();
-                        Helpers.ProfileID = "" + newProfile.Profileid;
+                        if (createProfileResponse.IsSuccessStatusCode)
+                        {
+                            Profile? newProfile = await createProfileResponse.Content.ReadFromJsonAsync<Profile>();
+                            Helpers.ProfileID = "" + newProfile.Profileid;
+                            loginError = false;
+                        }
+                        else
+                        {
+                            MessageBox.Show("Failed to create profile", "Profile Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                            loginError = true;
+                        }
                     }
                     else
                     {
                         //Store id for future use
+                        loginError = false;
                         Helpers.ProfileID = "" + profile.Profileid;
                     }
+                    btnLogin.IsEnabled = true;
                 }
             }
             catch (HttpRequestException ex)
             {
-                MessageBox.Show(ex.Message, "Error Checking Profile", MessageBoxButton.OK, MessageBoxImage.Error);
+                if (ex.Message.Contains("Connection", StringComparison.OrdinalIgnoreCase))
+                {
+                    MessageBox.Show("Failed to connect, please check your network and try again later.", "Connection Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    loginError = true;
+                    btnLogin.IsEnabled = true;
+                }
+                else
+                {
+                    MessageBox.Show(ex.Message, "Error Checking Profile", MessageBoxButton.OK, MessageBoxImage.Error);
+                    loginError = true;
+                    btnLogin.IsEnabled = true;
+                }
             }
         }
 
@@ -118,13 +167,22 @@ namespace CodeLearningSpectaclesWPF
                 {
                     string content = await response.Content.ReadAsStringAsync();
                     var auth = JsonSerializer.Deserialize<AuthObject>(content);
-                    CheckProfile(auth.login);
+                    await CheckProfile(auth.login);
                     return auth;
                 }
             }
             catch (HttpRequestException ex)
             {
-                MessageBox.Show(ex.Message, "Error getting data", MessageBoxButton.OK, MessageBoxImage.Error);
+                if (ex.Message.Contains("Connection", StringComparison.OrdinalIgnoreCase))
+                {
+                    MessageBox.Show("Failed to connect, please check your network and try again later.", "Connection Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    loginError = true;
+                }
+                else
+                {
+                    MessageBox.Show(ex.Message, "Error getting github user data", MessageBoxButton.OK, MessageBoxImage.Error);
+                    loginError = true;
+                }
             }
             return null;
         }
@@ -173,7 +231,7 @@ namespace CodeLearningSpectaclesWPF
 
         private async void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            btnLogin.IsEnabled = true;
+            btnLogin.IsEnabled = false;
             // Check login status of user if not coming back from main window
             if (Environment.GetEnvironmentVariable("ACCESS_TOKEN") == null)
             {
@@ -208,6 +266,7 @@ namespace CodeLearningSpectaclesWPF
                 btnLogin.Content = "Continue";
                 btnLogin.Visibility = Visibility.Visible;
                 btnLogout.Visibility = Visibility.Visible;
+                btnLogin.IsEnabled = true;
             }
         }
     }
