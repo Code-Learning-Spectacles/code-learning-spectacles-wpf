@@ -44,7 +44,7 @@ namespace CodeLearningSpectaclesWPF.Views
                     StackPanel stackPanel = new StackPanel();
 
                     Label codeLabel = new Label();
-                    codeLabel.Content = dto.Codeconstruct;
+                    codeLabel.Content = Regex.Replace(dto.Codeconstruct, "(?<=.)([A-Z])", " $1");
                     codeLabel.FontSize = 20;
                     codeLabel.FontWeight = FontWeights.Bold;
 

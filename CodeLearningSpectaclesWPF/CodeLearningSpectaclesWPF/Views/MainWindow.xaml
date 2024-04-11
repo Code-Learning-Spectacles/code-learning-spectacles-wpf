@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CodeLearningSpectaclesWPF"
         mc:Ignorable="d"
-        Title="Code Learning Spectacles" Height="450" Width="800" MinHeight="450" MinWidth="800" WindowStartupLocation="CenterScreen">
+        Title="Code Learning Spectacles" Height="450" Width="900" MinHeight="450" MinWidth="900" WindowStartupLocation="CenterScreen">
     <Grid Background="#8697ad">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"></ColumnDefinition>

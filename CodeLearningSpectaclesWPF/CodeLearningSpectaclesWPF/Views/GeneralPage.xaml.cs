@@ -43,7 +43,7 @@ namespace CodeLearningSpectaclesWPF.Views
                     StackPanel buttonsPanel = new StackPanel();
 
                     Label codeLabel = new Label();
-                    codeLabel.Content = dto.Codeconstruct;
+                    codeLabel.Content = Regex.Replace(dto.Codeconstruct, "(?<=.)([A-Z])", " $1");
                     codeLabel.FontSize = 20;
                     codeLabel.FontWeight = FontWeights.Bold;
 
@@ -69,13 +69,15 @@ namespace CodeLearningSpectaclesWPF.Views
                         MessageBox.Show("Copied to clipboard!", "Copied", MessageBoxButton.OK, MessageBoxImage.Information);
                     };
 
+                    var alreadySaved = profileLanguageconstructs.Any(plc => plc.Languageconstructid == dto.Languageconstructid);
+
                     Button favouriteButton = new Button();
                     var favButtonId = "favouriteButton" + dto.Languageconstructid.ToString();
 
-                    favouriteButton.Content = !profileLanguageconstructs.Any(plc => plc.Languageconstructid == dto.Languageconstructid) ? "Add to Favourites" : "Saved";
+                    favouriteButton.Content = alreadySaved ? "Add to Favourites" : "Saved";
                     favouriteButton.Margin = new Thickness(5);
                     favouriteButton.Padding = new Thickness(3);
-                    favouriteButton.IsEnabled = !profileLanguageconstructs.Any(plc => plc.Languageconstructid == dto.Languageconstructid);
+                    favouriteButton.IsEnabled = !alreadySaved;
                     favouriteButton.Background = Brushes.White;
                     favouriteButton.Click += async (sender, e) =>
                     {
@@ -101,6 +103,7 @@ namespace CodeLearningSpectaclesWPF.Views
                                 Button favNoteButton = buttons[buttonId];
                                 favNoteButton.IsEnabled = false;
                                 favNoteButton.Content = "Saved";
+                                favNoteButton.Visibility = Visibility.Hidden;
 
                             }
 
@@ -116,10 +119,11 @@ namespace CodeLearningSpectaclesWPF.Views
                     Button favouriteNoteButton = new Button();
                     var favNoteButtonId = "favouriteNoteButton" + dto.Languageconstructid.ToString();
                     favouriteNoteButton.Name = favNoteButtonId;
-                    favouriteNoteButton.Content = !profileLanguageconstructs.Any(plc => plc.Languageconstructid == dto.Languageconstructid) ? "Save with Note" : "Saved";
+                    favouriteNoteButton.Content = !alreadySaved ? "Save with Note" : "Saved";
                     favouriteNoteButton.Margin = new Thickness(5);
                     favouriteNoteButton.Padding = new Thickness(3);
-                    favouriteNoteButton.IsEnabled = !profileLanguageconstructs.Any(plc => plc.Languageconstructid == dto.Languageconstructid);
+                    favouriteNoteButton.Visibility = !alreadySaved ? Visibility.Visible : Visibility.Hidden;
+                    favouriteNoteButton.IsEnabled = !alreadySaved;
                     favouriteNoteButton.Background = Brushes.White;
                     favouriteNoteButton.Click += async (sender, e) =>
                     {
@@ -197,6 +201,7 @@ namespace CodeLearningSpectaclesWPF.Views
                     favNoteButton.IsEnabled = false;
                     favNoteButton.Visibility = Visibility.Hidden;
                     favNoteButton.Content = "Saved";
+                    favNoteButton.Visibility = Visibility.Hidden;
 
                     txtBox.Text = "";
 
