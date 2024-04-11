@@ -26,12 +26,12 @@ namespace CodeLearningSpectaclesWPF
     /// </summary>
     public partial class LoginWindow : Window
     {
+        private static string apiURL = Environment.GetEnvironmentVariable("BASE_ADDRESS") ?? "https://localhost:7103";
 
         private static HttpClient Client = new HttpClient()
         {
-            BaseAddress = new Uri("https://localhost:7107/api/v1/")
+            BaseAddress = new Uri(apiURL)
         };
-
         private DeviceVerification? deviceVerification;
         private LoginViewModel ViewModel { get; set; }
 

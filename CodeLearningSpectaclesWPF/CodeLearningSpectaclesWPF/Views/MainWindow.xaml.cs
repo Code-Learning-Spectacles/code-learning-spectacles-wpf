@@ -15,10 +15,16 @@ namespace CodeLearningSpectaclesWPF
     public partial class MainWindow : Window
     {
 
+
+        private static string apiURL = Environment.GetEnvironmentVariable("BASE_ADDRESS") ?? "https://localhost:7101";
+
+
         private static HttpClient Client = new HttpClient()
         {
-            BaseAddress = new Uri("https://localhost:7107/api/v1/")
+           BaseAddress = new Uri(apiURL)
         };
+
+        
 
 
         public static BrushConverter bc = new();
