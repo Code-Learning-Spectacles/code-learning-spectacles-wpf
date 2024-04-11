@@ -7,10 +7,17 @@
       mc:Ignorable="d" 
       d:DesignHeight="434.04" d:DesignWidth="533.333333333333"
       Title="General Page"
-       Background="white">
+       Background="#FFEEEEEE">
     <Grid>
         <ScrollViewer VerticalScrollBarVisibility="Auto">
             <StackPanel>
+
+                <DockPanel HorizontalAlignment="Left">
+                    <Label x:Name="SearchLabel" Content="Search" FontSize="18" FontWeight="Bold" Foreground="Black" Grid.ColumnSpan="2" Margin="0,0,20,0"/>
+
+                    <TextBox x:Name="txtSearch" FontSize="18" Width="300" VerticalContentAlignment="Center" TextChanged="txtSearch_TextChanged"/>
+                </DockPanel>
+
                 <Label x:Name="Heading" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="24" FontWeight="Bold" Foreground="Black" HorizontalContentAlignment="Center" Grid.ColumnSpan="2" Margin="209,0,0,0"/>
 
                 <WrapPanel x:Name="MainWrapPanel" Orientation="Horizontal"/>
