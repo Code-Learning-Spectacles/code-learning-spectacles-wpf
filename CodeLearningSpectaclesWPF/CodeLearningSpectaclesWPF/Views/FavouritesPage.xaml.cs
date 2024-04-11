@@ -4,6 +4,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Text.Json;
+using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -36,7 +37,7 @@ namespace CodeLearningSpectaclesWPF.Views
                 StackPanel stackPanel = new StackPanel();
 
                 Label codeLabel = new Label();
-                codeLabel.Content = dto.Codeconstruct;
+                codeLabel.Content = Regex.Replace(dto.Codeconstruct, "(?<=.)([A-Z])", " $1");
                 codeLabel.FontSize = 20;
                 codeLabel.FontWeight = FontWeights.Bold;
 
