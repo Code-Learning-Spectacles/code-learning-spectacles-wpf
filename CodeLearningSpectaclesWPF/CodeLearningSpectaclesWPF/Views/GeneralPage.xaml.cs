@@ -21,7 +21,7 @@ namespace CodeLearningSpectaclesWPF.Views
 
         private static HttpClient Client = new HttpClient()
         {
-            BaseAddress = new Uri("https://localhost:7107/api/v1/")
+            BaseAddress = new Uri("http://API-env.eba-8bvi8xmn.eu-west-1.elasticbeanstalk.com/api/v1/")
         };
 
         public GeneralPage(List<LanguageConstructDTO> languageconstructDTOs, List<Profilelanguageconstruct> profileLanguageconstructs)
@@ -74,7 +74,7 @@ namespace CodeLearningSpectaclesWPF.Views
                     Button favouriteButton = new Button();
                     var favButtonId = "favouriteButton" + dto.Languageconstructid.ToString();
 
-                    favouriteButton.Content = alreadySaved ? "Add to Favourites" : "Saved";
+                    favouriteButton.Content = !alreadySaved ? "Add to Favourites" : "Saved";
                     favouriteButton.Margin = new Thickness(5);
                     favouriteButton.Padding = new Thickness(3);
                     favouriteButton.IsEnabled = !alreadySaved;
