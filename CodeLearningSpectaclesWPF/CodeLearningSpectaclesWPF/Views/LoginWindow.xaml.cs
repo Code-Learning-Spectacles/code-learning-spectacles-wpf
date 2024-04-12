@@ -39,6 +39,7 @@ namespace CodeLearningSpectaclesWPF
             btnLogin.IsEnabled = false;
             if (Environment.GetEnvironmentVariable("ACCESS_TOKEN") != null)
             {
+                
                 if (loginError)
                 {
                     Helpers.Profile = await GetProfileAsync();
@@ -258,6 +259,7 @@ namespace CodeLearningSpectaclesWPF
                 {
                     lblLoggedIn.Content = "Not logged in.";
                     btnLogin.Visibility = Visibility.Visible;
+                    btnLogin.IsEnabled = true;
                 }
             }
             else
